@@ -1,0 +1,27 @@
+.loginButton {
+    margin-top: 32px!important;
+}
+
+.loginText {
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.678);
+    margin-top: 32px;
+    cursor: pointer
+}
+
+.loginFieldsContainer {
+    margin: auto;
+    position: relative;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: calc(100vw - 50px);
+    height: 400px;
+}
+
+.loginContainer {
+    height: 100vh
+}

@@ -1,0 +1,101 @@
+:root {
+    --success: #4CB050;
+    --error: #F54337;
+    --info: #40C8F4;
+    --warning: #FEC107;
+}
+
+.notification {
+    padding: 0px!important;
+    background-color: white!important;
+    height: auto!important;
+    border-radius: 6px!important;
+    text-align: left;
+    overflow: hidden
+}
+
+.notifications-br {
+    bottom: 55px!important;
+    max-height: 90vh;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.notification-dismiss {
+    background-color: white!important;
+}
+
+.notification-message {
+    padding: 0px 10px!important;
+    line-height: 1.5!important;
+    white-space: pre-line;
+}
+
+.notification-title {
+    padding: 0px 10px!important;
+    color: white!important;
+    width: 100%!important;
+    line-height: 2!important;
+}
+
+/* ERROR */
+
+.notification-error .notification-dismiss {
+    color: var(--error)!important;
+}
+
+.notification-error {
+    border: 1.4px solid var(--error)!important;
+}
+
+.notification-error .notification-title {
+    background: var(--error)!important;
+}
+
+/* SUCCESS */
+
+.notification-success .notification-dismiss {
+    color: var(--success)!important;
+}
+
+.notification-success {
+    border: 1.4px solid var(--success)!important;
+}
+
+.notification-success .notification-title {
+    background: var(--success)!important;
+}
+
+/* info */
+
+.notification-info .notification-dismiss {
+    color: var(--info)!important;
+}
+
+.notification-info {
+    border: 1.4px solid var(--info)!important;
+}
+
+.notification-info .notification-title {
+    background: var(--info)!important;
+}
+
+/* warning */
+
+.notification-warning .notification-dismiss {
+    color: var(--warning)!important;
+}
+
+.notification-warning {
+    border: 1.4px solid var(--warning)!important;
+}
+
+.notification-warning .notification-title {
+    background: var(--warning)!important;
+}
+
+.notifications-wrapper {
+    height: 0px!important;
+    width: 0px;
+    position: absolute;
+}
