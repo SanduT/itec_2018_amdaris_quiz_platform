@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:3.7.3-jessie
+    volumes:
+      - /var/mongodb_data:/data/db
+    ports:
+      - 27017:27017
+
+backend:
+    build: './backend'
+    command: >
+            sh -c "" 
+    volumes:
+      - /var/mongodb_data:/storage
+    ports:
+      - 8080:8080
+    depends_on: 
+      - mongo
+
+
+  frontend:
+    build: './frontend'
+    volumes:
+      - ${FRONTEND_PATH}:/app
+    command: >
+            sh -c "npm install && npm run start"
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
