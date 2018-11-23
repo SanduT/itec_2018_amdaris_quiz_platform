@@ -2,8 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const quizSchema = new Schema({
-  title: { type: String, required: true },
-  body: { type: String }
+  text: { type: String, required: true }
 })
 
 module.exports = quizSchema
