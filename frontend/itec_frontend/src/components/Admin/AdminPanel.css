@@ -1,0 +1,8 @@
+.toolbarExtension {
+    width: 100vw;
+    height: 30vh;
+    background-color: black;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}

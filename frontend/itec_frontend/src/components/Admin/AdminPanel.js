@@ -16,6 +16,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Questions from "./Questions/Questions";
 import Statistics from "./Statistics/Statistics";
 import AdminLogin from "./AdminLogin";
+import "./AdminPanel.css";
 
 // import { connect } from 'react-redux'
 
@@ -103,6 +104,8 @@ class AdminPanel extends Component {
 
         return (
             <div className={classes.root}>
+                <div className="toolbarExtension" />
+
                 <AppBar position="static">
                     <Toolbar style={{ backgroundColor: adminColor, color: "white" }}>
                         <IconButton
