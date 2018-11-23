@@ -10,7 +10,7 @@ const config = {
     secret: 'eK8NM8LPnh9w42lLiCNN'
   },
   origin: {
-    url: 'https://quizzard.com'
+    url: 'https://quizzard.club'
   }
 }
 
