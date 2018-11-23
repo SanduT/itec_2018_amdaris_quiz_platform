@@ -20,7 +20,7 @@ services:
   frontend:
     build: './frontend/itec_frontend'
     ports:
-      - 80:5000
+      - 5000:5000
     depends_on:
       - backend
 
