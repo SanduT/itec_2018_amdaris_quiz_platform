@@ -12,6 +12,9 @@ router.route('/login')
 router.route('/logout')
   .post((req, res, next) => controller.logout(req, res, next))
 
+router.route('/verify/:token')
+  .post((req, res, next) => controller.verifyUser(req, res, next))
+
 router.route('/:id')
   .put([controller.isLoggedIn], (...args) => controller.updateUser(...args))
   .get([controller.isLoggedIn], (...args) => controller.findUserById(...args))

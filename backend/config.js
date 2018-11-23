@@ -8,6 +8,9 @@ const config = {
   },
   session: {
     secret: 'eK8NM8LPnh9w42lLiCNN'
+  },
+  origin: {
+    url: 'https://quizzard.com'
   }
 }
 

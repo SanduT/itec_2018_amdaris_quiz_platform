@@ -9,7 +9,9 @@ const userSchema = new Schema({
   name: { type: String, required: true },
   phone_nr: { type: String },
   password: { type: String, required: true },
-  role: {type: Number, default: 0}
+  role: {type: Number, default: 0},
+  verified: {type: Boolean, default: false},
+  accessToken: {type: String}
 })
 
 userSchema.pre('save', function (next) {
