@@ -6,11 +6,13 @@ const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const morgan = require('morgan')
 const bluebird = require('bluebird')
-
+const cors = require('cors')
 const config = require('./config')
 const routes = require('./routes')
 
 const app = express()
+
+app.use(cors({credentials: true, origin: true}))
 
 mongoose.Promise = bluebird
 mongoose.connect(config.mongo.url, {useNewUrlParser: true})
