@@ -11,7 +11,8 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   role: {type: Number, default: 0},
   verified: {type: Boolean, default: false},
-  accessToken: {type: String}
+  accessToken: {type: String},
+  customEmailAccept: {type: Boolean, default: true}
 })
 
 userSchema.pre('save', function (next) {
