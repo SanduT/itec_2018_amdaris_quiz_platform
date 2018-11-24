@@ -9,22 +9,18 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import SingleQuestion from "./SingleQuestion/SingleQuestion";
 import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Edit from "@material-ui/icons/Edit";
 import Add from "@material-ui/icons/Add";
 import SortBy from "./Sorting/SortBy";
 import Drawer from "@material-ui/core/Drawer";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import Sort from "@material-ui/icons/Sort";
 import "./Questions.css";
+import Dialog from "./Dialog/Dialog";
 
 const drawerWidth = 320;
 const drawerHeight = 440;
@@ -159,9 +155,19 @@ class Questions extends Component {
         super(props);
         this.state = {
             expanded: null,
-            sortingOpen: false
+            sortingOpen: false,
+            addModal: false,
+            category: ""
         };
     }
+
+    handleClickOpen = () => {
+        this.setState({ addModal: true });
+    };
+
+    handleClose = () => {
+        this.setState({ addModal: false });
+    };
 
     handleChange = panel => (event, expanded) => {
         this.setState({
@@ -184,9 +190,18 @@ class Questions extends Component {
         ));
     }
 
-    renderAddButton() {
+    triggerNewQuestion(cat) {
+        this.setState({ addModal: true, category: cat });
+    }
+
+    renderAddButton(cat) {
         return (
-            <ListItem button>
+            <ListItem
+                button
+                onClick={() => {
+                    this.triggerNewQuestion(cat);
+                }}
+            >
                 <Add style={{ margin: "auto" }} />
             </ListItem>
         );
@@ -212,7 +227,7 @@ class Questions extends Component {
                         <div className={classes.list}>
                             <List>
                                 {this.renderQuestionPreview(questions)}
-                                {this.renderAddButton()}
+                                {this.renderAddButton(cat)}
                             </List>
                         </div>
                     </ExpansionPanelDetails>
@@ -231,6 +246,12 @@ class Questions extends Component {
                 </div>
                 <Typography className={classes.title}>Categories</Typography>
                 {this.renderCategories()}
+
+                <Dialog
+                    handleClose={this.handleClose}
+                    handleClickOpen={this.handleClickOpen}
+                    open={this.state.addModal}
+                />
 
                 <Drawer
                     className={classes.drawer}
