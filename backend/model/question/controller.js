@@ -119,6 +119,9 @@ class QuestionController extends Controller {
       }
       delete req.query.filter_by
     }
+    if (req.query.categoryId === 'null') {
+      req.query.categoryId = null
+    }
     if (req.query.sort_by) {
       req.sort = true
       req.sort_by = req.query.sort_by

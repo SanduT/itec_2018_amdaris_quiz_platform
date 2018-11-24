@@ -5,7 +5,7 @@ const Router = require('express').Router
 const router = new Router()
 
 router.route('/')
-  .get([userController.isAdmin], (...args) => controller.find(...args))
+  .get([userController.isAdmin], (...args) => controller.findWithQuestions(...args))
   .post([userController.isAdmin], (...args) => controller.create(...args))
 
 router.route('/:id')
