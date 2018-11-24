@@ -10,7 +10,7 @@ const cors = require("cors");
 const config = require("./config");
 const routes = require("./routes");
 const app = express();
-// process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 app.use(cors({ credentials: true, origin: true }));
 

@@ -34,10 +34,10 @@ class App extends Component {
             <div className="App">
                 <Router>
                     <div>
-                        <Route path="/login" initial component={Login} />
-                        {this.state.isAdmin && <Route path="/adminpanel" component={AdminPanel} />}
-                        <Route path="/" component={Quiz} />
-                        <Route path="/activate/:hash" component={Verify} />
+                        <Route path="/login" exact initial component={Login} />
+                        {this.state.isAdmin && <Route path="/admin" component={AdminPanel} />}
+                        <Route path="/" component={Quiz} exact />
+                        <Route path="/activate/:hash" exact component={Verify} />
                     </div>
                 </Router>
             </div>

@@ -12,22 +12,17 @@ const SideNavigation = props => {
         {
             text: "Questions",
             icon: <InboxIcon />,
-            goto: "/adminpanel/questions"
+            goto: "/admin/questions"
         },
         {
-            text: "Questions",
+            text: "Statistics",
             icon: <InboxIcon />,
-            goto: "/adminpanel/questions"
+            goto: "/admin/statistics"
         },
         {
-            text: "Questions",
+            text: "Events",
             icon: <InboxIcon />,
-            goto: "/adminpanel/questions"
-        },
-        {
-            text: "Questions",
-            icon: <InboxIcon />,
-            goto: "/adminpanel/questions"
+            goto: "/admin/events"
         }
     ];
 
