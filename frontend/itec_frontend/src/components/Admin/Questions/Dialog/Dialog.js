@@ -1,0 +1,384 @@
+import React from "react";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import SingleQuestion from "../SingleQuestion/SingleQuestion";
+import { FormControlLabel, Checkbox, TextField } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import { primary } from "../../../../styles/colors";
+import PropTypes from "prop-types";
+import Camera from "@material-ui/icons/CameraAlt";
+import Cancel from "@material-ui/icons/Cancel";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
+import Add from "@material-ui/icons/Add";
+import withMobileDialog from "@material-ui/core/withMobileDialog";
+
+import "./Dialog.css";
+
+const styles = theme => ({
+    button: {
+        display: "block",
+        marginTop: theme.spacing.unit * 2
+    },
+    formControl: {
+        margin: theme.spacing.unit,
+        width: "calc(100% - 32px)",
+        borderRadius: 5
+    },
+    select: {
+        width: "100%"
+    },
+    root: {
+        color: primary,
+        "&$checked": {
+            color: primary
+        }
+    },
+    checked: {
+        color: primary,
+        "&$checked": {
+            color: primary
+        }
+    },
+    camera: {
+        fontSize: 44,
+        margin: 13,
+        color: "grey"
+    },
+    dialog: {
+        margin: 0
+    },
+    textField: {
+        width: "calc(100% - 100px)"
+    },
+    paper: {
+        margin: 0
+    },
+    scrollPaper: {
+        margin: 0
+    },
+    scrollPaper: {
+        margin: 0
+    }
+});
+
+class AddDialog extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            age: "",
+            scored: false,
+            multipleChoice: false,
+            singleChoice: false,
+            simpleAnswer: false,
+            image: "",
+            title: "",
+            difficulty: 0,
+            category: "",
+            choices: [" "],
+            answers: []
+        };
+        this.uploadImageRef = React.createRef();
+    }
+    handleChange = name => event => {
+        this.setState({ [name]: event.target.checked });
+        if (name == "multipleChoice") {
+            this.setState({ answers: [] });
+        }
+    };
+
+    handleChangeTitle = name => event => {
+        this.setState({ [name]: event.target.value });
+    };
+
+    uploadImage() {
+        console.log(this.uploadImageRef);
+        this.uploadImageRef.current.click();
+    }
+
+    onChange(e) {
+        console.log(e.target.files);
+    }
+
+    changeChoice(event, index) {
+        let newChoices = this.state.choices;
+
+        newChoices[index] = event.target.value;
+
+        this.setState({ choices: newChoices });
+    }
+
+    handleChangeRadio(e, i) {
+        console.log(e, i);
+        this.setState({ answers: [i] });
+    }
+
+    handleChangeCheckbox(e, i) {
+        console.log(e.target.checked);
+        console.log(e);
+        let newAnswers = this.state.answers;
+        if (e.target.checked) {
+            newAnswers.push(i);
+        } else {
+            let index = newAnswers.indexOf(i);
+            if (index > -1) {
+                newAnswers.splice(index, 1);
+            }
+        }
+        this.setState({ answers: newAnswers });
+    }
+
+    removeChoice(i) {
+        console.log("called");
+        let newAnswers = this.state.answers;
+
+        let index = newAnswers.indexOf(i);
+        console.log(index);
+        if (index > -1) {
+            newAnswers.splice(index, 1);
+        }
+
+        for (let c = 0; c < newAnswers.length; c++) {
+            if (newAnswers[c] > index) {
+                newAnswers[c]--;
+            }
+        }
+
+        console.log(this.state.answers);
+        console.log(this.state.choices);
+        console.log(i);
+
+        let newChoices = this.state.choices;
+        newChoices.splice(i, 1);
+
+        this.setState({ answers: newAnswers, choices: newChoices });
+    }
+
+    renderChoices() {
+        const { classes } = this.props;
+
+        if (!this.state.multipleChoice) {
+            return this.state.choices.map((choice, index) => {
+                return (
+                    <div style={{ display: "flex" }}>
+                        <Radio
+                            style={{ width: 30, height: 30, padding: 0, marginTop: 25, marginRight: 15 }}
+                            checked={this.state.answers[0] === index}
+                            onChange={e => this.handleChangeRadio(e, index)}
+                            value="a"
+                            name="radio-button-demo"
+                            aria-label="A"
+                        />
+                        <TextField
+                            id="standard-name"
+                            label={"Choice" + (index + 1)}
+                            className={classes.textField}
+                            value={choice}
+                            onChange={e => this.changeChoice(e, index)}
+                            margin="normal"
+                        />
+                        <Cancel
+                            style={{
+                                marginTop: 26,
+                                marginLeft: 10,
+                                color: "grey",
+                                fontSize: 30
+                            }}
+                            onClick={() => this.removeChoice(index)}
+                        />
+                    </div>
+                );
+            });
+        } else {
+            return this.state.choices.map((choice, index) => {
+                return (
+                    <div style={{ display: "flex" }}>
+                        <Checkbox
+                            style={{ width: 30, height: 30, padding: 0, marginTop: 25, marginRight: 15 }}
+                            checked={this.state.answers.includes(index)}
+                            onChange={e => this.handleChangeCheckbox(e, index)}
+                            value="a"
+                        />
+                        <TextField
+                            id="standard-name"
+                            label={"Choice" + (index + 1)}
+                            className={classes.textField}
+                            value={choice}
+                            onChange={e => this.changeChoice(e, index)}
+                            margin="normal"
+                        />
+                        <Cancel onClick={() => this.removeChoice(index)} />
+                    </div>
+                );
+            });
+        }
+    }
+
+    submitForm() {
+        // axios.post('link',{
+        //     scored: false,
+        //     multipleChoice: false,
+        //     singleChoice: false,
+        //     simpleAnswer: false,
+        //     image: "",
+        //     title: "",
+        //     difficulty: 0,
+        //     category: "",
+        //     choices: [],
+        //     answers: []
+        // })
+
+        this.resetAll();
+    }
+
+    resetAll() {
+        this.setState({
+            scored: false,
+            multipleChoice: false,
+            singleChoice: false,
+            simpleAnswer: false,
+            image: "",
+            title: "",
+            difficulty: 0,
+            category: "",
+            choices: [],
+            answers: []
+        });
+
+        this.props.handleClose();
+    }
+
+    addNewChoice() {
+        let newChoices = this.state.choices;
+
+        newChoices.push("");
+        this.setState({ choices: newChoices });
+    }
+
+    renderQuestion() {
+        const { classes } = this.props;
+
+        return (
+            <div className="questionContainer">
+                <div onClick={() => this.uploadImage()} className="photoContainer">
+                    <Camera className={classes.camera} />
+                    <input style={{ display: "none" }} ref={this.uploadImageRef} type="file" onChange={this.onChange} />
+                </div>
+                <br />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            classes={{
+                                root: classes.root,
+                                checked: classes.checked
+                            }}
+                            checked={this.state.scored}
+                            onChange={this.handleChange("scored")}
+                            value="this.state.scored"
+                        />
+                    }
+                    label="Scored"
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            classes={{
+                                root: classes.root,
+                                checked: classes.checked
+                            }}
+                            checked={this.state.singleChoice}
+                            onChange={this.handleChange("singleChoice")}
+                            value="this.state.singleChoice"
+                        />
+                    }
+                    label="Choices"
+                />
+
+                <br />
+
+                <TextField
+                    id="standard-name"
+                    label="Question"
+                    className={classes.textField}
+                    value={this.state.title}
+                    onChange={this.handleChange("title")}
+                    margin="normal"
+                />
+
+                {this.state.singleChoice && (
+                    <div className="choices">
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    classes={{
+                                        root: classes.root,
+                                        checked: classes.checked
+                                    }}
+                                    checked={this.state.multipleChoice}
+                                    onChange={this.handleChange("multipleChoice")}
+                                    value="this.state.multipleChoice"
+                                />
+                            }
+                            label="Multiple choice"
+                        />
+                        {this.renderChoices()}
+                        <Add onClick={() => this.addNewChoice()} />
+                    </div>
+                )}
+            </div>
+        );
+    }
+    render() {
+        const { classes } = this.props;
+        const { fullScreen } = this.props;
+        return (
+            <div>
+                <Dialog
+                    fullScreen={fullScreen}
+                    className={classes.dialog}
+                    open={this.props.open}
+                    onClose={this.props.handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    scroll={this.state.scroll}
+                    maxWidth={"lg"}
+                >
+                    <div className="dialogContent">
+                        <DialogTitle id="alert-dialog-title">{"Add new question"}</DialogTitle>
+                        <DialogContent style={{ minWidth: "340px" }}>{this.renderQuestion()}</DialogContent>
+                        <DialogActions>
+                            <Button
+                                variant="contained"
+                                style={{ backgroundColor: primary, color: "white" }}
+                                onClick={() => this.submitForm()}
+                            >
+                                Save
+                            </Button>
+                            <Button
+                                variant="contained"
+                                style={{ backgroundColor: primary, color: "white" }}
+                                onClick={() => this.resetAll()}
+                                autoFocus
+                            >
+                                Cancel
+                            </Button>
+                        </DialogActions>
+                    </div>
+                </Dialog>
+            </div>
+        );
+    }
+}
+AddDialog.propTypes = {
+    classes: PropTypes.object.isRequired,
+    fullScreen: PropTypes.bool.isRequired
+};
+
+export default withMobileDialog()(withStyles(styles)(AddDialog));
