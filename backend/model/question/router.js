@@ -7,7 +7,7 @@ const Router = require('express').Router
 const router = new Router()
 
 router.route('/')
-  .get((...args) => controller.find(...args))
+  .get((...args) => controller.findWithQuery(...args))
   .post((...args) => controller.createWithSimiliarities(...args))
 
 router.route('/:id')

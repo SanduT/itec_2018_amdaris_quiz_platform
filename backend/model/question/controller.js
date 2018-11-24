@@ -27,6 +27,10 @@ class QuestionController extends Controller {
       objToAdd.image = question.image
     }
 
+    if (question.difficulty_level) {
+      objToAdd.difficulty_level = question.difficulty_level
+    }
+
     if (question.categoryId) objToAdd.categoryId = question.categoryId
 
     return this.facade.find({}).then((questions) => {
@@ -64,6 +68,11 @@ class QuestionController extends Controller {
           if (question.Score) {
             objToAdd.score = question.Score
           }
+
+          if (question.Difficulty) {
+            objToAdd.difficulty_level = question.Difficulty
+          }
+
           if (question.Time) {
             objToAdd.time_constraint = question.Time
           }
@@ -76,6 +85,21 @@ class QuestionController extends Controller {
 
         return Promise.all(toAddMap).then((resp) => res.status(200).json(resp)).catch(err => next(err))
       })
+  }
+
+  findWithQuery (req, res, next) {
+    if (req.query.sort_by) {
+      req.sort = true
+      req.sort_by = req.query.sort_by
+      delete req.query.sort_by
+    } else req.sort = false
+
+    if (req.query.text) {
+      const query = req.query.text
+      req.query.text = {$regex: query, $options: 'i'}
+    }
+    console.log(req.query)
+    return this.find(req, res, next)
   }
 }
 
