@@ -6,6 +6,9 @@ router.route('/')
   .get([controller.isAdmin], (...args) => controller.find(...args))
   .post((req, res, next) => controller.register(req, res, next))
 
+router.route('/me')
+  .get([controller.isLoggedIn], (req, res, next) => res.status(200).send(req.requestUser))
+
 router.route('/login')
   .post((req, res, next) => controller.login(req, res, next))
 
