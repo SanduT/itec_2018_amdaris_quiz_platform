@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const eventSchema = new Schema({
   title: { type: String, required: true },
-  body: { type: String }
+  expiry_date: {type: Date}
 })
 
 module.exports = eventSchema

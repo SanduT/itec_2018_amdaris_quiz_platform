@@ -11,10 +11,10 @@ const questionSchema = new Schema({
   time_constraint: {type: Number},
   choices: {type: [String]},
   right_answers: {type: [Number]},
-  score: {type: Number},
+  score: {type: Number, default: 0},
   categoryId: { type: Schema.Types.ObjectId,
     ref: 'categories'},
-  difficulty_level: {type: Number, enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+  difficulty_level: {type: Number, enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], default: 0}
 })
 
 module.exports = questionSchema
