@@ -299,7 +299,7 @@ class Questions extends Component {
             .then(resp => {
                 console.log(resp);
                 this.setState({
-                    categories: resp.data.catetgoriesWithChildren,
+                    categories: resp.data.categoriesWithChildren,
                     defaultCategory: resp.data.noCategoryChildren
                 });
             })
