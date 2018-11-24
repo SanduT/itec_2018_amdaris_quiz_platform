@@ -21,7 +21,15 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Sort from "@material-ui/icons/Sort";
 import "./Questions.css";
 import Dialog from "./Dialog/Dialog";
+import NewCategoryDialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
+import axios from "../../../utils/axios";
 const drawerWidth = 320;
 const drawerHeight = 440;
 
@@ -157,8 +165,18 @@ class Questions extends Component {
             expanded: null,
             sortingOpen: false,
             addModal: false,
-            category: ""
+            category: "",
+            addCategoryDialog: false,
+            newCategory: ""
         };
+    }
+
+    triggerNewCategory() {
+        this.setState({ addCategoryDialog: true });
+    }
+
+    triggerCloseCategoryModal() {
+        this.setState({ addCategoryDialog: false, newCategory: "" });
     }
 
     handleClickOpen = () => {
@@ -174,6 +192,12 @@ class Questions extends Component {
             expanded: expanded ? panel : false
         });
     };
+
+    addNewCategory() {
+        axios.post("/category", {
+            title: this.state.newCategory
+        });
+    }
 
     renderQuestions(question) {
         return question.map((q, index) => {
@@ -236,6 +260,12 @@ class Questions extends Component {
         });
     }
 
+    handleNewCategoryChange = name => event => {
+        this.setState({
+            [name]: event.target.value
+        });
+    };
+
     render() {
         const { classes, theme } = this.props;
 
@@ -244,8 +274,49 @@ class Questions extends Component {
                 <div className="openDrawerButton" onClick={() => this.handleDrawerOpen()}>
                     <Sort style={{ marginTop: "13px" }} />
                 </div>
-                <Typography className={classes.title}>Categories</Typography>
+                <div style={{ display: "flex" }}>
+                    <Typography className={classes.title}>Categories</Typography>
+                    <div style={{ margin: "auto" }} />
+                    <Typography
+                        onClick={() => this.triggerNewCategory()}
+                        style={{ fontSize: 30, cursor: "pointer" }}
+                        className={classes.title}
+                    >
+                        +
+                    </Typography>
+                </div>
                 {this.renderCategories()}
+
+                <NewCategoryDialog
+                    open={this.state.addCategoryDialog}
+                    onClose={() => this.triggerCloseCategoryModal()}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <DialogTitle id="form-dialog-title">New Category</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Please enter the name of the new category you wish to add.
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            value={this.state.newCategory}
+                            onChange={this.handleNewCategoryChange("newCategory")}
+                            id="name"
+                            label="Category name"
+                            type="email"
+                            fullWidth
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.triggerCloseCategoryModal()} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={() => this.addNewCategory()} color="primary">
+                            Add
+                        </Button>
+                    </DialogActions>
+                </NewCategoryDialog>
 
                 <Dialog
                     handleClose={this.handleClose}

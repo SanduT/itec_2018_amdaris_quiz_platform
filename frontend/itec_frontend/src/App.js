@@ -17,7 +17,7 @@ class App extends Component {
                         <Route path="/adminpanel" component={AdminPanel} />
                         <Route path="/quiz" component={Quiz} />
                         <Route path="/login" initial component={Login} />
-                        <Route path="/verify/:hash" component={Verify} />
+                        <Route path="/activate/:hash" component={Verify} />
                     </div>
                 </Router>
             </div>

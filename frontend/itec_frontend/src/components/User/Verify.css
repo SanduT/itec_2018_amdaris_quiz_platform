@@ -1,0 +1,114 @@
+.verifyPageContainer {
+    width: 100vw;
+    height: 100vh;
+}
+
+.verifyPageContainer img {
+    position: fixed;
+    bottom: 0;
+    left: 60%;
+    width: 520px;
+    height: 520px;
+}
+
+.congratulationsContainer {
+    width: 600px;
+    height: 400px;
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    z-index: 35;
+}
+
+.congratulationsContainer p {
+    font-size: 30px;
+    color: #000000a1;
+    font-style: italic;
+}
+
+@media screen and (max-width: 2300px) {
+    .verifyPageContainer img {
+        left: 50%;
+    }
+    .congratulationsContainer {
+        width: 600px;
+        height: 400px;
+        top: 20%;
+        left: 20%;
+    }
+}
+
+@media screen and (max-width: 1900px) {
+    .verifyPageContainer img {
+        left: 50%;
+    }
+    .congratulationsContainer {
+        width: 600px;
+        height: 400px;
+        top: 20%;
+        left: 20%;
+    }
+}
+
+@media screen and (max-width: 1500px) {
+    .verifyPageContainer img {
+        left: 50%;
+    }
+    .congratulationsContainer {
+        width: 600px;
+        height: 400px;
+        top: 20%;
+        left: 20%;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .verifyPageContainer img {
+        left: 40%;
+    }
+    .congratulationsContainer {
+        width: 500px;
+        height: 400px;
+        top: 20%;
+        left: 10%;
+    }
+    .congratulationsContainer p {
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .verifyPageContainer img {
+        left: 30%;
+    }
+    .congratulationsContainer {
+        width: 500px;
+        height: 400px;
+        top: 10%;
+        left: 5%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .verifyPageContainer img {
+        left: 20%;
+    }
+    .congratulationsContainer {
+        width: calc(100vw - 50px);
+        height: 400px;
+        top: 10%;
+        left: 5%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .verifyPageContainer img {
+        left: 20%;
+    }
+    .congratulationsContainer {
+        width: calc(100vw - 50px);
+        height: 400px;
+        top: 2%;
+        left: 3%;
+    }
+}

@@ -64,17 +64,20 @@ class Login extends Component {
             } else if (!this.validateEmail(this.state.email)) {
                 this._addNotification("Error", "Please use a valid email.", "error");
             } else
-            axios.post("/user/login",{
-                email: this.state.email,
-                password: this.state.password
-            }).then(()=>{
-                this._addNotification("GREAT", "GO CONQUER THE QUIZ WORLD!", "success");
-                setTimeout(() => {
-                    this.props.history.push('/')
-                }, 500);
-            }).catch(()=>{
-                this._addNotification("Error", "Something went wrong.", "error");                
-            })
+                axios
+                    .post("/user/login", {
+                        email: this.state.email,
+                        password: this.state.password
+                    })
+                    .then(() => {
+                        this._addNotification("GREAT", "GO CONQUER THE QUIZ WORLD!", "success");
+                        setTimeout(() => {
+                            this.props.history.push("/");
+                        }, 500);
+                    })
+                    .catch(() => {
+                        this._addNotification("Error", "Something went wrong.", "error");
+                    });
         } else {
             if (
                 this.state.email.length === 0 ||
@@ -86,17 +89,24 @@ class Login extends Component {
             } else if (!this.validateEmail(this.state.email)) {
                 this._addNotification("Error", "Please use a valid email.", "error");
             } else
-            axios.post("/user",{
-                email: this.state.email,
-                phone_nr: this.state.phone,
-                name:this.state.name,
-                password: this.state.password
-            }).then(()=>{
-                this._addNotification("Ok great!", "You have been registered, check your mail for a validation email.", "success");
-                this.switchLogin()
-            }).catch((err)=>{
-                this._addNotification("Error", err, "error");                
-            })
+                axios
+                    .post("/user", {
+                        email: this.state.email,
+                        phone_nr: this.state.phone,
+                        name: this.state.name,
+                        password: this.state.password
+                    })
+                    .then(() => {
+                        this._addNotification(
+                            "Ok great!",
+                            "You have been registered, check your mail for a validation email.",
+                            "success"
+                        );
+                        this.switchLogin();
+                    })
+                    .catch(() => {
+                        this._addNotification("Error", "An error ocurred", "error");
+                    });
         }
     }
 
