@@ -14,6 +14,7 @@ import Drawer from "@material-ui/core/Drawer";
 import SideNavigation from "./SideNavigation";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Questions from "./Questions/Questions";
+import Events from "./Events/Events";
 import Statistics from "./Statistics/Statistics";
 import AdminLogin from "./AdminLogin";
 import "./AdminPanel.css";
@@ -149,6 +150,7 @@ class AdminPanel extends Component {
                     <Route path={`${this.props.match.url}/`} exact component={AdminLogin} />
                     <Route path={`${this.props.match.url}/statistics`} exact component={Statistics} />
                     <Route path={`${this.props.match.url}/questions`} exact component={Questions} />
+                    <Route path={`${this.props.match.url}/events`} exact component={Events} />
                 </div>
             </div>
         );

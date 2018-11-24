@@ -1,0 +1,65 @@
+.photoContainer {
+    width: 70px;
+    height: 70px;
+    border-radius: 35px;
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+    text-align: center;
+    margin: auto;
+    cursor: pointer;
+    margin-top: 10px
+}
+
+.questionContainer {
+    text-align: center;
+}
+
+.addingDialog {
+    width: 700px
+}
+
+.dialogContent {
+    width: 700px
+}
+
+/* 
+@media screen and (max-width: 2300px) {
+    .dialogContent {
+        width: 600px
+    }
+}
+
+@media screen and (max-width: 1900px) {
+    .dialogContent {
+        width: 600px
+    }
+}
+
+@media screen and (max-width: 1500px) {
+    .dialogContent {
+        width: 600px
+    }
+} */
+
+@media screen and (max-width: 1200px) {
+    .dialogContent {
+        width: 600px
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .dialogContent {
+        width: 500px
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .dialogContent {
+        width: 300px
+    }
+}
+
+.choices {
+    margin-top: 30px
+}
