@@ -1,1 +1,1 @@
-export const url = process.env.REACT_APP_ENV==="production" ? 'http://backend:8080' : 'http://localhost:8080'
+export const url = process.env.REACT_APP_ENV==="production" ? 'https://quizzard.club/api' : 'http://localhost:8080'

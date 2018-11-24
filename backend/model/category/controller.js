@@ -7,10 +7,15 @@ class CategoryController extends Controller {
     return this.facade.find({}).then((resp) => {
       return Promise.all(
         resp.map((category) => {
-          return questionFacade.find({categoryId: category._id}).then((childQuestions) => {
+          req.query.categoryId = category._id
+          return questionFacade.findWithQuery(req).then((childQuestions) => {
             return Promise.resolve({category, childQuestions})
           })
-        })).then((catetgoriesWithChildren) => questionFacade.find({categoryId: null}).then((noCategoryChildren) => res.status(200).json({catetgoriesWithChildren, noCategoryChildren})))
+        })).then((categoriesWithChildren) => {
+        req.query.categoryId = null
+        return questionFacade.findWithQuery(req)
+          .then((noCategoryChildren) => res.status(200).json({categoriesWithChildren, noCategoryChildren}))
+      })
         .catch(err => next(err))
     })
   }
