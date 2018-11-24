@@ -302,7 +302,8 @@ class Events extends Component {
             questions: [],
             addEventDialog: false,
             newEvent: "",
-            events: []
+            events: [],
+            event: ""
         };
     }
 
@@ -319,17 +320,17 @@ class Events extends Component {
             return (
                 <ExpansionPanel
                     key={index}
-                    expanded={expanded === event.title}
-                    onChange={this.handleChange(event.title)}
+                    expanded={expanded === event.event.title}
+                    onChange={this.handleChange(event.event.title)}
                 >
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography className={classes.heading}>{event.title}</Typography>
+                        <Typography className={classes.heading}>{event.event.title}</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <div className={classes.list}>
                             <List>
                                 {this.renderQuizPreview()}
-                                {this.renderAddButton(event)}
+                                {this.renderAddButton(event.event)}
                             </List>
                         </div>
                     </ExpansionPanelDetails>
@@ -347,7 +348,7 @@ class Events extends Component {
             <ListItem
                 button
                 onClick={() => {
-                    this.triggerNewQuiz();
+                    this.triggerNewQuiz(event);
                 }}
             >
                 <Add style={{ margin: "auto" }} />
@@ -513,6 +514,7 @@ class Events extends Component {
                     categories={this.state.categories}
                     questions={this.state.questions}
                     questionOptions={this.getQuestionOptions}
+                    currentEvent={this.state.event}
                     // event={this.state.category}
                 />
             </div>

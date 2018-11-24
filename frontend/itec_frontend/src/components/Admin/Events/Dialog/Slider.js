@@ -30,25 +30,15 @@ class DifficultySlider extends Component {
 
     log(value) {
         console.log(value);
-        if (value[0] === value[1] && value[0] !== 0) {
-            this.props.setDifficulty([value[0] / 10]);
-        } else if (value[0] === value[1] && value[0] === 0) {
-            this.props.setDifficulty([value[0]]);
-        } else {
-            let valueArray = [];
-            for (let i = value[0]; i <= value[1]; i = i + 10) {
-                if (i !== 0) valueArray.push(i / 10);
-                else valueArray.push(i);
-            }
-            this.props.setDifficulty(valueArray);
-        }
+        if (value !== 0) this.props.setDifficulty(value / 10);
+        else this.props.setDifficulty(value);
     }
     render() {
         return (
             <div>
                 <div style={style}>
                     <p style={{ textAlign: "left", color: "grey" }}>Difficulty</p>
-                    <Slider.Range min={0} marks={marks} step={10} onChange={e => this.log(e)} defaultValue={[0, 0]} />
+                    <Slider min={0} marks={marks} step={null} onChange={e => this.log(e)} defaultValue={0} />
                 </div>
             </div>
         );

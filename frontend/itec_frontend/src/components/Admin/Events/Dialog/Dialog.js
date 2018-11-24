@@ -180,15 +180,13 @@ class AddDialog extends React.Component {
 
     submitForm() {
         axios
-            .post("/question", {
-                text: this.state.title,
-                categoryId: this.props.category._id,
-                choices: this.state.choices,
-                right_answers: this.state.answers,
-                score: this.state.difficulty,
-                difficulty_level: this.state.difficulty
+            .post("/quiz", {
+                title: this.state.title,
+                eventId: this.props.currentEvent._id,
+                scored: this.state.scored,
+                rules: this.state.quizContent
             })
-            // .then(resp => this.props.getCategories())
+            .then(resp => console.log(resp))
             .catch(err => console.log(err));
 
         this.resetAll();
@@ -223,7 +221,7 @@ class AddDialog extends React.Component {
 
         let newContent = this.state.quizContent;
 
-        newContent[index].difficulty = val;
+        newContent[index].difficulty_level = val;
 
         this.setState({ quizContent: newContent });
     }
@@ -239,7 +237,7 @@ class AddDialog extends React.Component {
     handleChangeNumber(e, index) {
         let newContent = this.state.quizContent;
 
-        newContent[index].number = e.target.value;
+        newContent[index].no = e.target.value;
 
         this.setState({ quizContent: newContent });
     }
@@ -253,7 +251,7 @@ class AddDialog extends React.Component {
         ];
 
         return this.state.quizContent.map((quiz, index) => {
-            return quiz.type === "c" ? (
+            return quiz.rule_type === "category" ? (
                 <div>
                     <div style={{ display: "flex" }}>
                         <FormControl key={index} className={classes.formControlSmaller}>
@@ -280,7 +278,7 @@ class AddDialog extends React.Component {
                             id="standard-name"
                             label="Number"
                             className={classes.textFieldMini}
-                            value={quiz.number}
+                            value={quiz.no}
                             onChange={e => this.handleChangeNumber(e, index)}
                             margin="normal"
                         />
@@ -414,25 +412,29 @@ class AddDialog extends React.Component {
     }
 
     addQuestionToQuiz() {
-        let newContent = this.state.quizContent;
+        axios.post("/quiz/verify", this.state.quizContent).then(() => {
+            let newContent = this.state.quizContent;
 
-        newContent.push({
-            type: "q",
-            id: ""
+            newContent.push({
+                rule_type: "question",
+                id: ""
+            });
+            this.setState({ quizContent: newContent });
         });
-        this.setState({ quizContent: newContent });
     }
 
     addCategoryToQuiz() {
-        let newContent = this.state.quizContent;
+        axios.post("/quiz/verify", this.state.quizContent).then(() => {
+            let newContent = this.state.quizContent;
 
-        newContent.push({
-            type: "c",
-            id: "",
-            number: 1,
-            difficulty: [0]
+            newContent.push({
+                rule_type: "category",
+                id: "",
+                no: 1,
+                difficulty_level: 0
+            });
+            this.setState({ quizContent: newContent });
         });
-        this.setState({ quizContent: newContent });
     }
 
     renderQuestionOptions() {
