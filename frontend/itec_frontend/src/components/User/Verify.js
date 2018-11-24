@@ -18,7 +18,7 @@ export class Vefify extends React.Component {
 
     componentWillMount() {
         axios
-            .post("/user/verify", { hash: this.props.match.params.hash })
+            .post("/user/verify", { token: this.props.match.params.hash })
             .then(() => {
                 //add success notif
                 this.setState({ goodWizzard: true, buttonText: "Expecto patronum!" });

@@ -64,8 +64,8 @@ class UserController extends Controller {
   }
 
   verifyUser (req, res, next) {
-    if (!req.params.token) return next(new Error('No such User!'))
-    this.facade.findOne({accessToken: req.params.token}).then((user) => {
+    if (!req.body.token) return next(new Error('No such User!'))
+    this.facade.findOne({accessToken: req.body.token}).then((user) => {
       if (!user) {
         return next(new Error('No such User!'))
       } else {

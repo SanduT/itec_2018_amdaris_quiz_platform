@@ -12,7 +12,7 @@ router.route('/login')
 router.route('/logout')
   .post((req, res, next) => controller.logout(req, res, next))
 
-router.route('/verify/:token')
+router.route('/verify')
   .post((req, res, next) => controller.verifyUser(req, res, next))
 
 router.route('/:id')
