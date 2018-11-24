@@ -10,9 +10,15 @@ class Controller {
   }
 
   find (req, res, next) {
-    return this.facade.find(req.query)
-      .then(collection => res.status(200).json(collection))
-      .catch(err => next(err))
+    if (req.sort) {
+      return this.facade.Model.find(req.query).sort({ [req.sort_by]: 1 })
+        .then(collection => res.status(200).json(collection))
+        .catch(err => next(err))
+    } else {
+      return this.facade.find(req.query)
+        .then(collection => res.status(200).json(collection))
+        .catch(err => next(err))
+    }
   }
 
   findOne (req, res, next) {

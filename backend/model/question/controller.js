@@ -14,17 +14,26 @@ class QuestionController extends Controller {
     if (question.choices && question.choices.length !== 0 && question.right_answers && question.right_answers.length !== 0) {
       objToAdd.choices = question.choices
       objToAdd.right_answers = question.right_answers
+      if (objToAdd.right_answers.length > 1) {
+        objToAdd.multiple_answer = true
+      }
       objToAdd.free_text = false
     } else objToAdd.free_text = true
 
     if (question.score) {
       objToAdd.score = question.score
+      objToAdd.scored = true
     }
     if (question.time_constraint) {
       objToAdd.time_constraint = question.time_constraint
+      objToAdd.time_constrained = true
     }
     if (question.image) {
       objToAdd.image = question.image
+    }
+
+    if (question.difficulty_level) {
+      objToAdd.difficulty_level = question.difficulty_level
     }
 
     if (question.categoryId) objToAdd.categoryId = question.categoryId
@@ -58,17 +67,28 @@ class QuestionController extends Controller {
           if (question.Choices && question.Answers) {
             objToAdd.choices = question.Choices.split(';')
             objToAdd.right_answers = question.Answers.split(';')
+            if (objToAdd.right_answers.length > 1) {
+              objToAdd.multiple_answer = true
+            }
             objToAdd.free_text = false
           } else objToAdd.free_text = true
 
           if (question.Score) {
             objToAdd.score = question.Score
+            objToAdd.scored = true
           }
+
+          if (question.Difficulty) {
+            objToAdd.difficulty_level = question.Difficulty
+          }
+
           if (question.Time) {
             objToAdd.time_constraint = question.Time
+            objToAdd.time_constrained = true
           }
           return this.facade.find({}).then((questions) => {
             let questionTexts = questions.map((question) => question.text)
+            if (questionTexts.length === 0) questionTexts = ['']
             const similarity = stringSimilarity.findBestMatch(question.Question, questionTexts)
             if (similarity.bestMatch.rating < 0.7) { return this.facade.create(objToAdd) } else return Promise.resolve()
           })
@@ -76,6 +96,40 @@ class QuestionController extends Controller {
 
         return Promise.all(toAddMap).then((resp) => res.status(200).json(resp)).catch(err => next(err))
       })
+  }
+
+  findWithQuery (req, res, next) {
+    if (req.query.filter_by) {
+      switch (req.query.filter_by) {
+        case 'multiple_answer':
+          req.query.multiple_answer = true
+          break
+        case 'single_answer':
+          req.query.multiple_answer = true
+          break
+        case 'free_text':
+          req.query.free_text = true
+          break
+        case 'scored':
+          req.query.scored = true
+          break
+        case 'time_constrained':
+          req.query.time_constrained = true
+          break
+      }
+      delete req.query.filter_by
+    }
+    if (req.query.sort_by) {
+      req.sort = true
+      req.sort_by = req.query.sort_by
+      delete req.query.sort_by
+    } else req.sort = false
+
+    if (req.query.text) {
+      const query = req.query.text
+      req.query.text = {$regex: query, $options: 'i'}
+    }
+    return this.find(req, res, next)
   }
 }
 
