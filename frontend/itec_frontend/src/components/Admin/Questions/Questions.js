@@ -165,7 +165,9 @@ class Questions extends Component {
             expanded: null,
             sortingOpen: false,
             addModal: false,
+            currentCategory: "",
             categories: [],
+            defaultCategory: [],
             addCategoryDialog: false,
             newCategory: ""
         };
@@ -249,15 +251,19 @@ class Questions extends Component {
         const { expanded } = this.state;
         return this.state.categories.map((cat, index) => {
             return (
-                <ExpansionPanel key={index} expanded={expanded === cat.title} onChange={this.handleChange(cat.title)}>
+                <ExpansionPanel
+                    key={index}
+                    expanded={expanded === cat.category.title}
+                    onChange={this.handleChange(cat.category.title)}
+                >
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography className={classes.heading}>{cat.title}</Typography>
+                        <Typography className={classes.heading}>{cat.category.title}</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <div className={classes.list}>
                             <List>
-                                {this.renderQuestionPreview(questions)}
-                                {this.renderAddButton(cat.title)}
+                                {this.renderQuestionPreview(cat.childQuestions)}
+                                {this.renderAddButton(cat.category)}
                             </List>
                         </div>
                     </ExpansionPanelDetails>
@@ -266,12 +272,36 @@ class Questions extends Component {
         });
     }
 
+    renderDefaultCategory() {
+        const { classes } = this.props;
+        const { expanded } = this.state;
+
+        return (
+            <ExpansionPanel expanded={expanded === "default"} onChange={this.handleChange("default")}>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography className={classes.heading}>Default Category</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    <div className={classes.list}>
+                        <List>
+                            {this.renderQuestionPreview(this.state.defaultCategory)}
+                            {this.renderAddButton("default")}
+                        </List>
+                    </div>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
+        );
+    }
+
     getCategories() {
         axios
             .get("/category")
             .then(resp => {
                 console.log(resp);
-                this.setState({ categories: resp.data });
+                this.setState({
+                    categories: resp.data.catetgoriesWithChildren,
+                    defaultCategory: resp.data.noCategoryChildren
+                });
             })
             .catch(err => {
                 console.log(err);
@@ -308,6 +338,7 @@ class Questions extends Component {
                     </Typography>
                 </div>
                 {this.state.categories.length > 0 && this.renderCategories()}
+                {this.state.defaultCategory.length > 0 && this.renderDefaultCategory()}
 
                 <NewCategoryDialog
                     open={this.state.addCategoryDialog}
@@ -344,6 +375,9 @@ class Questions extends Component {
                     handleClose={this.handleClose}
                     handleClickOpen={this.handleClickOpen}
                     open={this.state.addModal}
+                    categories={this.state.categories}
+                    getCategories={() => this.getCategories()}
+                    category={this.state.category}
                 />
 
                 <Drawer

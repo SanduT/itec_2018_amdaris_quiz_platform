@@ -19,7 +19,14 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Add from "@material-ui/icons/Add";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
-
+import Input from "@material-ui/core/Input";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import FilledInput from "@material-ui/core/FilledInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import DifficultySlider from "./Slider";
+import axios from "../../../../utils/axios";
 import "./Dialog.css";
 
 const styles = theme => ({
@@ -29,7 +36,7 @@ const styles = theme => ({
     },
     formControl: {
         margin: theme.spacing.unit,
-        width: "calc(100% - 32px)",
+        width: "calc(100% - 100px)",
         borderRadius: 5
     },
     select: {
@@ -57,6 +64,9 @@ const styles = theme => ({
     },
     textField: {
         width: "calc(100% - 100px)"
+    },
+    select: {
+        // width: "calc(100% - 100px)"
     },
     paper: {
         margin: 0
@@ -167,7 +177,7 @@ class AddDialog extends React.Component {
         if (!this.state.multipleChoice) {
             return this.state.choices.map((choice, index) => {
                 return (
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", width: "calc(100% - 100px)", marginLeft: "50px" }}>
                         <Radio
                             style={{ width: 30, height: 30, padding: 0, marginTop: 25, marginRight: 15 }}
                             checked={this.state.answers[0] === index}
@@ -187,7 +197,7 @@ class AddDialog extends React.Component {
                         <Cancel
                             style={{
                                 marginTop: 26,
-                                marginLeft: 10,
+                                marginLeft: 16,
                                 color: "grey",
                                 fontSize: 30
                             }}
@@ -199,7 +209,7 @@ class AddDialog extends React.Component {
         } else {
             return this.state.choices.map((choice, index) => {
                 return (
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", width: "calc(100% - 100px)", marginLeft: "50px" }}>
                         <Checkbox
                             style={{ width: 30, height: 30, padding: 0, marginTop: 25, marginRight: 15 }}
                             checked={this.state.answers.includes(index)}
@@ -214,7 +224,15 @@ class AddDialog extends React.Component {
                             onChange={e => this.changeChoice(e, index)}
                             margin="normal"
                         />
-                        <Cancel onClick={() => this.removeChoice(index)} />
+                        <Cancel
+                            style={{
+                                marginTop: 26,
+                                marginLeft: 16,
+                                color: "grey",
+                                fontSize: 30
+                            }}
+                            onClick={() => this.removeChoice(index)}
+                        />
                     </div>
                 );
             });
@@ -222,18 +240,17 @@ class AddDialog extends React.Component {
     }
 
     submitForm() {
-        // axios.post('link',{
-        //     scored: false,
-        //     multipleChoice: false,
-        //     singleChoice: false,
-        //     simpleAnswer: false,
-        //     image: "",
-        //     title: "",
-        //     difficulty: 0,
-        //     category: "",
-        //     choices: [],
-        //     answers: []
-        // })
+        axios
+            .post("/question", {
+                text: this.state.title,
+                categoryId: this.props.category._id,
+                choices: this.state.choices,
+                right_answers: this.state.answers,
+                score: this.state.difficulty,
+                difficulty_level: this.state.difficulty
+            })
+            .then(resp => this.props.getCategories())
+            .catch(err => console.log(err));
 
         this.resetAll();
     }
@@ -260,6 +277,10 @@ class AddDialog extends React.Component {
 
         newChoices.push("");
         this.setState({ choices: newChoices });
+    }
+
+    setDifficulty(val) {
+        this.setState({ difficulty: val });
     }
 
     renderQuestion() {
@@ -308,9 +329,29 @@ class AddDialog extends React.Component {
                     label="Question"
                     className={classes.textField}
                     value={this.state.title}
-                    onChange={this.handleChange("title")}
+                    onChange={this.handleChangeTitle("title")}
                     margin="normal"
                 />
+
+                {/* <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="age-simple">Category</InputLabel>
+                    <Select
+                        className={classes.select}
+                        value={this.state.age}
+                        onChange={this.handleChangeTitle("category")}
+                        inputProps={{
+                            name: "age",
+                            id: "age-simple"
+                        }}
+                    >
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
+                        {this.renderCategories()}
+                    </Select>
+                </FormControl> */}
+
+                {this.state.scored && <DifficultySlider setDifficulty={val => this.setDifficulty(val)} />}
 
                 {this.state.singleChoice && (
                     <div className="choices">
@@ -329,11 +370,17 @@ class AddDialog extends React.Component {
                             label="Multiple choice"
                         />
                         {this.renderChoices()}
-                        <Add onClick={() => this.addNewChoice()} />
+                        <Add style={{ fontSize: "35px", marginTop: 10 }} onClick={() => this.addNewChoice()} />
                     </div>
                 )}
             </div>
         );
+    }
+
+    renderCategories() {
+        return this.props.categories.map(cat => {
+            return <MenuItem value={cat.category._id}>{cat.category.title}</MenuItem>;
+        });
     }
     render() {
         const { classes } = this.props;
