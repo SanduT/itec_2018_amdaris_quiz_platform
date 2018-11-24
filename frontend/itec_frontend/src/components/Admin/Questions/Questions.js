@@ -165,7 +165,7 @@ class Questions extends Component {
             expanded: null,
             sortingOpen: false,
             addModal: false,
-            category: "",
+            categories: [],
             addCategoryDialog: false,
             newCategory: ""
         };
@@ -194,9 +194,14 @@ class Questions extends Component {
     };
 
     addNewCategory() {
-        axios.post("/category", {
-            title: this.state.newCategory
-        });
+        axios
+            .post("/category", {
+                title: this.state.newCategory
+            })
+            .then(() => {
+                this.triggerCloseCategoryModal();
+                this.getCategories();
+            });
     }
 
     renderQuestions(question) {
@@ -238,26 +243,43 @@ class Questions extends Component {
     handleDrawerClose = () => {
         this.setState({ sortingOpen: false });
     };
+
     renderCategories() {
         const { classes } = this.props;
         const { expanded } = this.state;
-        return categories.map((cat, index) => {
+        return this.state.categories.map((cat, index) => {
             return (
-                <ExpansionPanel key={index} expanded={expanded === cat} onChange={this.handleChange(cat)}>
+                <ExpansionPanel key={index} expanded={expanded === cat.title} onChange={this.handleChange(cat.title)}>
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography className={classes.heading}>{cat}</Typography>
+                        <Typography className={classes.heading}>{cat.title}</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <div className={classes.list}>
                             <List>
                                 {this.renderQuestionPreview(questions)}
-                                {this.renderAddButton(cat)}
+                                {this.renderAddButton(cat.title)}
                             </List>
                         </div>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
             );
         });
+    }
+
+    getCategories() {
+        axios
+            .get("/category")
+            .then(resp => {
+                console.log(resp);
+                this.setState({ categories: resp.data });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    componentWillMount() {
+        this.getCategories();
     }
 
     handleNewCategoryChange = name => event => {
@@ -285,7 +307,7 @@ class Questions extends Component {
                         +
                     </Typography>
                 </div>
-                {this.renderCategories()}
+                {this.state.categories.length > 0 && this.renderCategories()}
 
                 <NewCategoryDialog
                     open={this.state.addCategoryDialog}

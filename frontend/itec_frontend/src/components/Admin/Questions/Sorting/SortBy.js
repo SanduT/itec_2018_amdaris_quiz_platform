@@ -123,7 +123,7 @@ class SortBy extends React.Component {
                                     }}
                                     checked={this.state.multipleChoice}
                                     onChange={this.handleChange("multipleChoice")}
-                                    value={this.state.multipleChoice}
+                                    value="{this.state.multipleChoice}"
                                 />
                             }
                             label="Gilad Gray"

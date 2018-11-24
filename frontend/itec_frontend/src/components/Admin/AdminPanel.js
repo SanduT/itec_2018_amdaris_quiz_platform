@@ -17,7 +17,7 @@ import Questions from "./Questions/Questions";
 import Statistics from "./Statistics/Statistics";
 import AdminLogin from "./AdminLogin";
 import "./AdminPanel.css";
-
+import { withRouter } from "react-router";
 // import { connect } from 'react-redux'
 
 const styles = theme => ({
@@ -145,13 +145,11 @@ class AdminPanel extends Component {
                     </Drawer>
                 </AppBar>
 
-                <Router>
-                    <div>
-                        <Route path={`${this.props.match.url}/`} exact component={AdminLogin} />
-                        <Route path={`${this.props.match.url}/statistics`} exact component={Statistics} />
-                        <Route path={`${this.props.match.url}/questions`} exact component={Questions} />
-                    </div>
-                </Router>
+                <div>
+                    <Route path={`${this.props.match.url}/`} exact component={AdminLogin} />
+                    <Route path={`${this.props.match.url}/statistics`} exact component={Statistics} />
+                    <Route path={`${this.props.match.url}/questions`} exact component={Questions} />
+                </div>
             </div>
         );
     }
@@ -161,4 +159,4 @@ AdminPanel.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(AdminPanel);
+export default withStyles(styles)(withRouter(AdminPanel));
