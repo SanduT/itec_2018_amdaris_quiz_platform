@@ -66,10 +66,15 @@ class Profile extends Component {
                         {this.state.leaderboard.map(ld => {
                             return ld.map(user => {
                                 return user.userId == this.state.id ? (
-                                    <div onClick={() => this.goToLeaderBoard(user.quizId)} className="userScore">
-                                        <p className="quizTitle">{user.quizTitle}</p>
-                                        <p className="quizScore">Score : {user.score}</p>
-                                    </div>
+                                    <a
+                                        style={{ outline: "none", textDecoration: "none" }}
+                                        href="https://quizzard.club/api/quiz/leaderboard/user.quizId"
+                                    >
+                                        <div className="userScore">
+                                            <p className="quizTitle">{user.quizTitle}</p>
+                                            <p className="quizScore">Score : {user.score}</p>
+                                        </div>
+                                    </a>
                                 ) : null;
                             });
                         })}

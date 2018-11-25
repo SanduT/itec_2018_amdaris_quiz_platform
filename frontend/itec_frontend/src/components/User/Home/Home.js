@@ -117,13 +117,13 @@ export class Home extends React.Component {
                             contribute to your fellow wizzard friends' quizzez!
                         </p>
 
-                        <Button
+                        {/* <Button
                             size="large"
                             variant="contained"
                             style={{ backgroundColor: primary, color: "white", width: 250 }}
                         >
                             And then what?
-                        </Button>
+                        </Button> */}
                     </div>
 
                     <img src={holdCard} />

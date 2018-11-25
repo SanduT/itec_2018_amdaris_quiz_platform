@@ -147,9 +147,9 @@ class AdminPanel extends Component {
                 </AppBar>
 
                 <div>
-                    <Route path={`${this.props.match.url}/`} exact component={AdminLogin} />
+                    {/* <Route path={`${this.props.match.url}/`} exact component={AdminLogin} /> */}
                     <Route path={`${this.props.match.url}/statistics`} exact component={Statistics} />
-                    <Route path={`${this.props.match.url}/questions`} exact component={Questions} />
+                    <Route path={`${this.props.match.url}/`} exact component={Questions} />
                     <Route path={`${this.props.match.url}/events`} exact component={Events} />
                 </div>
             </div>

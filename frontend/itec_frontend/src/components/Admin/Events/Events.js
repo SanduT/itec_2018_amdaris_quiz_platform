@@ -183,13 +183,12 @@ class Events extends Component {
         return quizzes.map((q, index) => (
             <ListItem button key={index}>
                 <ListItemText primary={q.title} />
-                <Button onClick={() => this.props.history.push("/api/quiz/qrcode/"+q._id)} >
-                <PhotoFilter  />
+                <Button onClick={() => this.props.history.push("/api/quiz/qrcode/" + q._id)}>
+                    <PhotoFilter />
                 </Button>
-                <Button onClick={() => this.triggerCloseEventModal()} >
+                {/* <Button onClick={() => this.triggerCloseEventModal()} >
                 <Edit />
-                </Button>
-              
+                </Button> */}
             </ListItem>
         ));
     }
