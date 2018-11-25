@@ -68,7 +68,7 @@ class Profile extends Component {
                                 return user.userId == this.state.id ? (
                                     <a
                                         style={{ outline: "none", textDecoration: "none" }}
-                                        href="https://quizzard.club/api/quiz/leaderboard/user.quizId"
+                                        href={"https://quizzard.club/api/quiz/leaderboard/"+user.quizId}
                                     >
                                         <div className="userScore">
                                             <p className="quizTitle">{user.quizTitle}</p>
