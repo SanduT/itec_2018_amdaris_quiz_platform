@@ -18,6 +18,9 @@ router.route('/logout')
 router.route('/verify')
   .post((req, res, next) => controller.verifyUser(req, res, next))
 
+router.route('/submitquiz')
+  .post([controller.isLoggedIn],(req, res, next) => controller.submitQuiz(req, res, next))
+
 router.route('/:id')
   .put([controller.isLoggedIn], (...args) => controller.updateUser(...args))
   .get([controller.isLoggedIn], (...args) => controller.findUserById(...args))

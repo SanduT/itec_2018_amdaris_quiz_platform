@@ -46,7 +46,8 @@ class Quiz extends Component {
         this.state = {
             isLogged: false,
             questions: [],
-            baseQuestions: []
+            baseQuestions: [],
+            currentQuiz:{}
         };
     }
     componentWillMount() {
@@ -58,12 +59,15 @@ class Quiz extends Component {
             })
             .catch(err => this.props.history.push("/login"));
 
-        axios.get("/question").then(resp => {
-            console.log(resp.data);
-            this.setState({ questions: resp.data });
+
+
+            axios.get("/quiz/take/"+ this.props.match.params.id).then(resp => {
+                
+            console.log(resp.data)
+            this.setState({ questions: resp.data.questions, currentQuiz:resp.data.quiz });
             let baseQuestions = [];
 
-            for (let q of resp.data) {
+            for (let q of resp.data.questions) {
                 if (q.free_text) {
                     baseQuestions.push({
                         text: q.text,
@@ -82,7 +86,9 @@ class Quiz extends Component {
 
             console.log(baseQuestions);
             this.setState({ baseQuestions: baseQuestions });
-        });
+        }).catch((err)=>{
+            this.props.history.push("/")
+        })
     }
 
     handleChange = index => event => {
@@ -279,7 +285,17 @@ class Quiz extends Component {
             }
         }
 
+        axios.post("/user/submitquiz",{
+            questions:processedQuestions,
+            quizId:this.state.currentQuiz._id
+        }).then((resp)=>{
+            this.props.history.push("/")
+        }).catch((err)=>{
+            alert(err.response.data.error)
+        })
         console.log(processedQuestions);
+
+        //this.state.currentQuiz._id
     }
 
     render() {
@@ -289,7 +305,7 @@ class Quiz extends Component {
                     <div>
                         <div style={{ backgroundColor: primary }} className="toolbarExtensionQuiz" />
                         <div className="formContainer">
-                            <p className="quizTitle"> Quiz Title</p>
+                            <p className="quizTitle"> {this.state.currentQuiz.title}</p>
                             {this.state.baseQuestions.length > 0 && this.renderForm()}
 
                             <Button

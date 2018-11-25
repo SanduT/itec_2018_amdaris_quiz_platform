@@ -83,7 +83,7 @@ class QuizController extends Controller {
   }
 
   generateQuiz (req, res, next) {
-    if (req.requestUser.quizzes.map((quizz) => quizz.quizzId).includes(req.params.quizzid)) { return next(new Error('User already completed quiz')) } else {
+    if (req.requestUser.quizzes.map((quizz) => quizz.quizId != null ? quizz.quizId.toString() : "" ).includes(req.params.quizzid)) { return next(new Error('User already completed quiz')) } else {
       return this.facade.findById(req.params.quizzid).then((quiz) => {
         let possibilities = quiz.rules
 
@@ -165,7 +165,7 @@ class QuizController extends Controller {
 
             let results = existingCategories.map((cat) => getRandom(cat.quests_to_show, cat.no))
             results.push(questionsToShow)
-            return res.status(200).json([].concat(...results))
+            return res.status(200).json({questions:[].concat(...results),quiz})
           } else {
             const possibility = possibilities[index]
             if (possibility.rule_type === 'question') {

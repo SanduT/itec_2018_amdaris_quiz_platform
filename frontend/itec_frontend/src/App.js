@@ -38,7 +38,7 @@ class App extends Component {
                         <Route path="/login" exact initial component={Login} />
                         {this.state.isAdmin && <Route path="/admin" component={AdminPanel} />}
                         <Route path="/" component={Home} exact />
-                        <Route path="/quiz" component={Quiz} exact />
+                        <Route path="/quiz/:id" component={Quiz} exact />
                         <Route path="/activate/:hash" exact component={Verify} />
                     </div>
                 </Router>

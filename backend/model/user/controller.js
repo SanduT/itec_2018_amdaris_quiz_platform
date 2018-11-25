@@ -78,6 +78,16 @@ class UserController extends Controller {
       }
     })
   }
+
+  submitQuiz (req,res,next) {
+    const to_push = {
+      quizId:req.body.quizId,
+      questions:req.body.questions
+    }
+    return this.facade.Model.updateOne({_id:req.requestUser._id},{$push:{quizzes:to_push}}).then((resp)=>{
+      return res.status(200).json(resp)
+    }).catch(next)
+  }
 }
 
 module.exports = new UserController(userFacade)
