@@ -10,6 +10,12 @@ router.route('/')
 router.route('/verify')
   .post((...args) => controller.checkIfPossible(...args))
 
+router.route('/take/:quizzid')
+  .get([userController.isLoggedIn], (...args) => controller.generateQuiz(...args))
+
+router.route('/qrcode/:quizzid')
+  .get((...args) => controller.generateQR(...args))
+
 router.route('/:id')
   .put([userController.isAdmin], (...args) => controller.update(...args))
   .get([userController.isAdmin], (...args) => controller.findById(...args))

@@ -1,3 +1,0 @@
-{
-    "exec": "eslint --fix . && node ./index.js" 
-}

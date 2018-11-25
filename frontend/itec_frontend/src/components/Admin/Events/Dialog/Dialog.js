@@ -433,7 +433,7 @@ class AddDialog extends React.Component {
                 rule_type: "category",
                 id: "",
                 no: 1,
-                difficulty_level: 0
+                difficulty_level: null
             });
             this.setState({ quizContent: newContent });
         }).catch(error=>{

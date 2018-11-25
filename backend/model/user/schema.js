@@ -12,7 +12,18 @@ const userSchema = new Schema({
   role: {type: Number, default: 0},
   verified: {type: Boolean, default: false},
   accessToken: {type: String},
-  customEmailAccept: {type: Boolean, default: true}
+  customEmailAccept: {type: Boolean, default: true},
+  quizzes: [{
+    quizId: {type: Schema.Types.ObjectId,
+      ref: 'quizzes'},
+    questions: [{
+      questionId: {type: Schema.Types.ObjectId,
+        ref: 'questions'},
+      answer: {type: String},
+      right_answer: {type: Boolean}
+    }],
+    date: {type: Date, default: Date.now()}
+  }]
 })
 
 userSchema.pre('save', function (next) {
