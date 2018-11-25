@@ -25,6 +25,14 @@ export class Home extends React.Component {
         this.props.history.push("/login");
     }
 
+    goToProfile() {
+        this.props.history.push("/profile");
+    }
+
+    goHome() {
+        this.props.history.push("/");
+    }
+
     logOut() {
         axios.post("/user/logout").then(() => {
             this.goToLogin();
@@ -51,8 +59,12 @@ export class Home extends React.Component {
         return (
             <div className="presentationPage">
                 <div className="homeToolbar" style={{ backgroundColor: primary }}>
-                    <Logo />
+                    <Logo onClick={() => this.goHome()} />
                     <div className="spacer" />
+
+                    <div onClick={() => this.goToProfile()} className="logOut">
+                        Profile
+                    </div>
 
                     <div onClick={() => this.logOut()} className="logOut">
                         Log out

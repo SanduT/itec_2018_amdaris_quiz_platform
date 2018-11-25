@@ -5,6 +5,7 @@ import AdminPanel from "./components/Admin/AdminPanel";
 import Quiz from "./components/User/Quiz/Quiz";
 import Home from "./components/User/Home/Home";
 import Login from "./components/User/Login/Login";
+import Profile from "./components/User/Profile/Profile";
 import "./App.css";
 import Verify from "./components/User/Verify";
 import axios from "./utils/axios";
@@ -39,6 +40,7 @@ class App extends Component {
                         {this.state.isAdmin && <Route path="/admin" component={AdminPanel} />}
                         <Route path="/" component={Home} exact />
                         <Route path="/quiz" component={Quiz} exact />
+                        <Route path="/profile" component={Profile} exact />
                         <Route path="/activate/:hash" exact component={Verify} />
                     </div>
                 </Router>

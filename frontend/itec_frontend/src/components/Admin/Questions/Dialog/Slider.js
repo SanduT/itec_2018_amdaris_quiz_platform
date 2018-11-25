@@ -36,9 +36,16 @@ class DifficultySlider extends Component {
     render() {
         return (
             <div>
+                {console.log(this.props.initialDifficulty)}
                 <div style={style}>
                     <p style={{ textAlign: "left", color: "grey" }}>Difficulty</p>
-                    <Slider min={0} marks={marks} step={null} onChange={e => this.log(e)} defaultValue={2} />
+                    <Slider
+                        min={0}
+                        marks={marks}
+                        step={null}
+                        onChange={e => this.log(e)}
+                        defaultValue={this.props.initialDifficulty * 10}
+                    />
                 </div>
             </div>
         );

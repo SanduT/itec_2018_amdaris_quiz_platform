@@ -29,6 +29,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
 import axios from "../../../utils/axios";
+import EditDialog from "./Dialog/EditDialog";
 const drawerWidth = 320;
 const drawerHeight = 440;
 
@@ -168,7 +169,9 @@ class Questions extends Component {
             categories: [],
             defaultCategory: [],
             addCategoryDialog: false,
-            newCategory: ""
+            newCategory: "",
+            editModal: false,
+            questionToEdit: null
         };
     }
 
@@ -209,11 +212,21 @@ class Questions extends Component {
         return questions.map((q, index) => (
             <ListItem button key={index}>
                 <ListItemText primary={q.text} />
-                <Edit />
+                <Edit onClick={() => this.triggerEditQuestion(q)} />
             </ListItem>
         ));
     }
 
+    triggerEditQuestion(q) {
+        this.setState({ questionToEdit: q });
+        setTimeout(() => {
+            this.setState({ editModal: true });
+        }, 500);
+    }
+
+    triggerCloseEditQuestionModal() {
+        this.setState({ editModal: false, questionToEdit: null });
+    }
     triggerNewQuestion(cat) {
         this.setState({ addModal: true, category: cat });
     }
@@ -301,6 +314,45 @@ class Questions extends Component {
             });
     }
 
+    filterBy(text, text2) {
+        return axios
+            .get("/category", {
+                params: {
+                    filter_by: text,
+                    sort_by: text2
+                }
+            })
+            .then(resp => {
+                console.log(resp);
+                this.setState({
+                    categories: resp.data.categoriesWithChildren,
+                    defaultCategory: resp.data.noCategoryChildren
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    sortBy(text) {
+        return axios
+            .get("/category", {
+                params: {
+                    sort_by: text
+                }
+            })
+            .then(resp => {
+                console.log(resp);
+                this.setState({
+                    categories: resp.data.categoriesWithChildren,
+                    defaultCategory: resp.data.noCategoryChildren
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     componentWillMount() {
         this.getCategories();
     }
@@ -373,6 +425,16 @@ class Questions extends Component {
                     category={this.state.category}
                 />
 
+                <EditDialog
+                    handleClose={() => this.triggerCloseEditQuestionModal()}
+                    handleClickOpen={this.triggerEditQuestion}
+                    open={this.state.editModal}
+                    categories={this.state.categories}
+                    getCategories={() => this.getCategories()}
+                    category={this.state.category}
+                    questionToEdit={this.state.questionToEdit}
+                />
+
                 <Drawer
                     className={classes.drawer}
                     variant="persistent"
@@ -388,7 +450,7 @@ class Questions extends Component {
                         </IconButton>
                         Sorting and Filters
                     </div>
-                    <SortBy />
+                    <SortBy applyFilters={text => this.filterBy(text)} sortBy={text => this.sortBy(text)} />
                 </Drawer>
             </div>
         );
