@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const quizSchema = new Schema({
   title: { type: String, required: true },
@@ -17,4 +17,4 @@ const quizSchema = new Schema({
     required: true }
 })
 
-module.exports = quizSchema;
+module.exports = quizSchema

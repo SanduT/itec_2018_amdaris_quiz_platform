@@ -412,7 +412,7 @@ class AddDialog extends React.Component {
     }
 
     addQuestionToQuiz() {
-        axios.post("/quiz/verify", this.state.quizContent).then(() => {
+        axios.post("/quiz/verify", {rules:this.state.quizContent}).then(() => {
             let newContent = this.state.quizContent;
 
             newContent.push({
@@ -420,11 +420,13 @@ class AddDialog extends React.Component {
                 id: ""
             });
             this.setState({ quizContent: newContent });
-        });
+        }).catch(error=>{
+            alert(error.response.data.error)
+        })
     }
 
     addCategoryToQuiz() {
-        axios.post("/quiz/verify", this.state.quizContent).then(() => {
+        axios.post("/quiz/verify", {rules:this.state.quizContent}).then(() => {
             let newContent = this.state.quizContent;
 
             newContent.push({
@@ -434,7 +436,9 @@ class AddDialog extends React.Component {
                 difficulty_level: 0
             });
             this.setState({ quizContent: newContent });
-        });
+        }).catch(error=>{
+            alert(error.response.data.error)
+        })
     }
 
     renderQuestionOptions() {
