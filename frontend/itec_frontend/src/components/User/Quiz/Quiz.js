@@ -87,7 +87,7 @@ class Quiz extends Component {
                 this.setState({ baseQuestions: baseQuestions });
             })
             .catch(err => {
-                this.props.history.push("/");
+                this.props.history.push("/login");
             });
     }
 
