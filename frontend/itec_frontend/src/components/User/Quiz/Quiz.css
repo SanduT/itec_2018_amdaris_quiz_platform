@@ -23,3 +23,27 @@
     margin: 32px;
     position: relative;
 }
+
+@media screen and (max-width: 1200px) {
+    .formContainer {
+        width: 800px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .formContainer {
+        width: 600px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .formContainer {
+        width: 500px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .formContainer {
+        width: calc(100vw - 50px);
+    }
+}

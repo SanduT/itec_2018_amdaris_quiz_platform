@@ -32,6 +32,11 @@ const styles = theme => ({
     },
     menu: {
         width: 200
+    },
+    formControl: {
+        textAlign: "left",
+        width: "80%",
+        marginTop: 32
     }
 });
 
@@ -70,7 +75,7 @@ class Quiz extends Component {
                         text: q.text,
                         right_answer: "",
                         questionId: q._id,
-                        answers: [0]
+                        answers: []
                     });
                 }
             }
@@ -119,7 +124,7 @@ class Quiz extends Component {
                                 control={
                                     <Checkbox
                                         checked={this.state.baseQuestions[index].answers.includes(choiceIndex)}
-                                        onChange={this.handleChangeRadio(index, choiceIndex)}
+                                        onChange={this.handleChangeCheckbox(index, choiceIndex)}
                                         value="gilad"
                                     />
                                 }
@@ -132,17 +137,26 @@ class Quiz extends Component {
         );
     }
 
-    // handleChangeRadio = (index, choiceIndex) => event => {
-    //     let newBaseQuestions = this.state.baseQuestions;
-
-    //     if (event.target.checked) {
-    //         newBaseQuestions[index].answers = [choiceIndex];
-    //     }
-    // };
-
-    handleChangeRadio = index => event => {
+    handleChangeRadio = (index, choiceIndex) => event => {
+        console.log(index, choiceIndex);
         let newBaseQuestions = this.state.baseQuestions;
-        newBaseQuestions[index].answers = [event.target.value];
+        console.log(newBaseQuestions);
+        newBaseQuestions[index].answers[0] = choiceIndex;
+
+        this.setState({ baseQuestions: newBaseQuestions });
+    };
+
+    handleChangeCheckbox = (index, choiceIndex) => event => {
+        let newBaseQuestions = this.state.baseQuestions;
+
+        if (event.target.checked) {
+            newBaseQuestions[index].answers.push(choiceIndex);
+        } else {
+            let index2 = newBaseQuestions[index].answers.indexOf(choiceIndex);
+            if (index2 > -1) {
+                newBaseQuestions[index].answers.splice(index2, 1);
+            }
+        }
 
         this.setState({ baseQuestions: newBaseQuestions });
     };
@@ -152,19 +166,29 @@ class Quiz extends Component {
         return (
             <FormControl component="fieldset" className={classes.formControl}>
                 <FormLabel component="legend">{question.text}</FormLabel>
-                <RadioGroup
-                    aria-label="Gender"
-                    name="gender1"
-                    className={classes.group}
-                    value={this.state.baseQuestions[index].answers[0]}
-                    onChange={this.handleChangeRadio(index)}
-                >
-                    {question.choices.map((choice, choiceIndex) => {
-                        console.log(choiceIndex);
-                        console.log(this.state.baseQuestions[index].answers[0]);
-                        return <FormControlLabel value={choiceIndex} control={<Radio />} label={choice} />;
-                    })}
-                </RadioGroup>
+
+                {question.choices.map((choice, choiceIndex) => {
+                    return (
+                        <div style={{ display: "flex", width: "calc(100% )" }}>
+                            <Radio
+                                style={{ width: 30, height: 30, padding: 0, marginTop: 25, marginRight: 15 }}
+                                checked={this.state.baseQuestions[index].answers[0] === choiceIndex}
+                                onChange={this.handleChangeRadio(index, choiceIndex)}
+                                value="a"
+                                name="radio-button-demo"
+                                aria-label="A"
+                            />
+                            <p
+                                style={{
+                                    marginTop: 28,
+                                    marginBottom: 0
+                                }}
+                            >
+                                {choice}
+                            </p>
+                        </div>
+                    );
+                })}
             </FormControl>
         );
     }
@@ -183,6 +207,81 @@ class Quiz extends Component {
         });
     }
 
+    submitForm() {
+        let processedQuestions = [];
+
+        for (let i in this.state.baseQuestions) {
+            let newQuestion;
+            if (this.state.questions[i].free_text) {
+                // baseQuestions.push({
+                //     text: q.text,
+                //     answer: "",
+                //     questionId: q._id
+                // });
+
+                newQuestion = {
+                    answer: this.state.baseQuestions[i].answer,
+                    questionId: this.state.questions[i]._id
+                };
+
+                processedQuestions.push(newQuestion);
+            } else if (this.state.questions[i].multiple_answer) {
+                let correctAnswers = this.state.questions[i].right_answers.sort();
+                let actualAnswers = this.state.baseQuestions[i].answers.sort();
+
+                if (correctAnswers.length !== actualAnswers.length) {
+                    newQuestion = {
+                        right_answer: false,
+                        questionId: this.state.questions[i]._id
+                    };
+                } else {
+                    let areEqual = true;
+                    for (let j in correctAnswers) {
+                        if (correctAnswers[j] != actualAnswers[j]) {
+                            areEqual = false;
+                            break;
+                        }
+                    }
+                    if (areEqual) {
+                        newQuestion = {
+                            right_answer: true,
+                            questionId: this.state.questions[i]._id
+                        };
+                    } else {
+                        newQuestion = {
+                            right_answer: false,
+                            questionId: this.state.questions[i]._id
+                        };
+                    }
+                }
+                processedQuestions.push(newQuestion);
+                // baseQuestions.push({
+                //     text: q.text,
+                //     right_answer: "",
+                //     questionId: q._id,
+                //     answers: []
+                // });
+            } else {
+                let correctAnswers = this.state.questions[i].right_answers[0];
+                let actualAnswers = this.state.baseQuestions[i].answers[0];
+                if (correctAnswers == actualAnswers) {
+                    newQuestion = {
+                        right_answer: true,
+                        questionId: this.state.questions[i]._id
+                    };
+                } else {
+                    newQuestion = {
+                        right_answer: false,
+                        questionId: this.state.questions[i]._id
+                    };
+                }
+                processedQuestions.push(newQuestion);
+            }
+        }
+
+        console.log(processedQuestions);
+    }
+
     render() {
         return (
             <div>
@@ -196,6 +295,7 @@ class Quiz extends Component {
                             <Button
                                 variant="contained"
                                 style={{ backgroundColor: primary, color: "white", margin: 32 }}
+                                onClick={() => this.submitForm()}
                             >
                                 Submit Form
                             </Button>
