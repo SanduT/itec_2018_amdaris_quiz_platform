@@ -47,11 +47,14 @@ class SortBy extends React.Component {
         multipleChoice: false,
         singleChoice: false,
         simpleAnswer: false,
-        hasImage: false
+        hasImage: false,
+        filterBy: ""
     };
 
     handleChange = name => event => {
-        this.setState({ [name]: event.target.checked });
+        if (event.target.checked) {
+            this.setState({ filterBy: name });
+        }
     };
 
     handleChangeSort = event => {
@@ -65,6 +68,14 @@ class SortBy extends React.Component {
     handleOpen = () => {
         this.setState({ open: true });
     };
+
+    applyFilters() {
+        this.props.applyFilters(this.state.filterBy, this.state.age);
+    }
+
+    sortBy() {
+        this.props.sortBy(this.state.age);
+    }
 
     render() {
         const { classes } = this.props;
@@ -88,10 +99,9 @@ class SortBy extends React.Component {
                         <MenuItem value="">
                             <em>None</em>
                         </MenuItem>
-                        <MenuItem value={10}>Difficulty</MenuItem>
-                        <MenuItem value={20}>Score</MenuItem>
-                        <MenuItem value={30}>Date</MenuItem>
-                        <MenuItem value={40}>Name</MenuItem>
+                        <MenuItem value={"difficulty_level"}>Difficulty</MenuItem>
+                        <MenuItem value={"score"}>Score</MenuItem>
+                        <MenuItem value={"text"}>Name</MenuItem>
                     </Select>
                 </FormControl>
 
@@ -107,12 +117,12 @@ class SortBy extends React.Component {
                                         root: classes.root,
                                         checked: classes.checked
                                     }}
-                                    checked={this.state.scored}
+                                    checked={this.state.filterBy === "scored"}
                                     onChange={this.handleChange("scored")}
                                     value="this.state.scored"
                                 />
                             }
-                            label="Antoine Llorca"
+                            label="Scored"
                         />
                         <FormControlLabel
                             control={
@@ -121,12 +131,12 @@ class SortBy extends React.Component {
                                         root: classes.root,
                                         checked: classes.checked
                                     }}
-                                    checked={this.state.multipleChoice}
-                                    onChange={this.handleChange("multipleChoice")}
+                                    checked={this.state.filterBy === "multiple_answer"}
+                                    onChange={this.handleChange("multiple_answer")}
                                     value="{this.state.multipleChoice}"
                                 />
                             }
-                            label="Gilad Gray"
+                            label="Multiple choice"
                         />
                         <FormControlLabel
                             control={
@@ -135,12 +145,12 @@ class SortBy extends React.Component {
                                         root: classes.root,
                                         checked: classes.checked
                                     }}
-                                    checked={this.state.singleChoice}
-                                    onChange={this.handleChange("singleChoice")}
+                                    checked={this.state.filterBy === "single_answer"}
+                                    onChange={this.handleChange("single_answer")}
                                     value="this.state.singleChoice"
                                 />
                             }
-                            label="Antoine Llorca"
+                            label="Single Choice"
                         />
                         <FormControlLabel
                             control={
@@ -149,17 +159,21 @@ class SortBy extends React.Component {
                                         root: classes.root,
                                         checked: classes.checked
                                     }}
-                                    checked={this.state.simpleAnswer}
-                                    onChange={this.handleChange("simpleAnswer")}
+                                    checked={this.state.filterBy === "free_text"}
+                                    onChange={this.handleChange("free_text")}
                                     value="this.state.simpleAnswer"
                                 />
                             }
-                            label="Jason Killian"
+                            label="Simple Answer"
                         />
                     </FormGroup>
                 </FormControl>
 
-                <Button variant="contained" style={{ backgroundColor: primary, color: "white" }}>
+                <Button
+                    variant="contained"
+                    style={{ backgroundColor: primary, color: "white" }}
+                    onClick={() => this.applyFilters()}
+                >
                     Apply Filters
                 </Button>
             </form>
