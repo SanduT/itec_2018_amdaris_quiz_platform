@@ -6,7 +6,6 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import SingleQuestion from "./SingleQuestion/SingleQuestion";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -116,183 +115,6 @@ const styles = theme => ({
     }
 });
 
-const events = ["iTEC", "RoboTEC", "uniHACK", "HackTM"];
-
-const quizzes = [
-    {
-        title: "Quiz 1",
-        questions: [
-            {
-                text: "How old are you?",
-                image: "",
-                choices: ["7", "12", "43"],
-                answers: [2],
-                score: "2",
-                category: "Personal",
-                difficulty_level: "6"
-            },
-            {
-                text: "How old are you?",
-                image: "",
-                choices: [],
-                answers: [],
-                score: "2",
-                category: "Personal",
-                difficulty_level: "6"
-            },
-            {
-                text: "Multiple choice question with a long name? ",
-                image: "",
-                choices: ["7", "12", "43"],
-                answers: [0, 2],
-                score: "5",
-                category: "Personal",
-                difficulty_level: "2"
-            },
-            {
-                text: "Whats on your mind?",
-                image: "",
-                choices: [],
-                answers: [],
-                score: "2",
-                category: "Personal",
-                difficulty_level: "6"
-            }
-        ],
-        timeout: 3000,
-        scored: false
-    },
-    {
-        title: "Quiz 2",
-        questions: [
-            {
-                text: "How old are you?",
-                image: "",
-                choices: ["7", "12", "43"],
-                answers: [2],
-                score: "2",
-                category: "Personal",
-                difficulty_level: "6"
-            },
-            {
-                text: "How old are you?",
-                image: "",
-                choices: [],
-                answers: [],
-                score: "2",
-                category: "Personal",
-                difficulty_level: "6"
-            },
-            {
-                text: "Multiple choice question with a long name? ",
-                image: "",
-                choices: ["7", "12", "43"],
-                answers: [0, 2],
-                score: "5",
-                category: "Personal",
-                difficulty_level: "2"
-            },
-            {
-                text: "Whats on your mind?",
-                image: "",
-                choices: [],
-                answers: [],
-                score: "2",
-                category: "Personal",
-                difficulty_level: "6"
-            }
-        ],
-        timeout: 3000,
-        scored: false
-    },
-    {
-        title: "Quiz 3",
-        questions: [
-            {
-                text: "How old are you?",
-                image: "",
-                choices: ["7", "12", "43"],
-                answers: [2],
-                score: "2",
-                category: "Personal",
-                difficulty_level: "6"
-            },
-            {
-                text: "How old are you?",
-                image: "",
-                choices: [],
-                answers: [],
-                score: "2",
-                category: "Personal",
-                difficulty_level: "6"
-            },
-            {
-                text: "Multiple choice question with a long name? ",
-                image: "",
-                choices: ["7", "12", "43"],
-                answers: [0, 2],
-                score: "5",
-                category: "Personal",
-                difficulty_level: "2"
-            },
-            {
-                text: "Whats on your mind?",
-                image: "",
-                choices: [],
-                answers: [],
-                score: "2",
-                category: "Personal",
-                difficulty_level: "6"
-            }
-        ],
-        timeout: 3000,
-        scored: false
-    },
-    {
-        title: "Quiz 4",
-        questions: [
-            {
-                text: "How old are you?",
-                image: "",
-                choices: ["7", "12", "43"],
-                answers: [2],
-                score: "2",
-                category: "Personal",
-                difficulty_level: "6"
-            },
-            {
-                text: "How old are you?",
-                image: "",
-                choices: [],
-                answers: [],
-                score: "2",
-                category: "Personal",
-                difficulty_level: "6"
-            },
-            {
-                text: "Multiple choice question with a long name? ",
-                image: "",
-                choices: ["7", "12", "43"],
-                answers: [0, 2],
-                score: "5",
-                category: "Personal",
-                difficulty_level: "2"
-            },
-            {
-                text: "Whats on your mind?",
-                image: "",
-                choices: [],
-                answers: [],
-                score: "2",
-                category: "Personal",
-                difficulty_level: "6"
-            }
-        ],
-        timeout: 3000,
-        scored: false
-    }
-];
-
 class Events extends Component {
     constructor(props) {
         super(props);
@@ -329,7 +151,7 @@ class Events extends Component {
                     <ExpansionPanelDetails>
                         <div className={classes.list}>
                             <List>
-                                {this.renderQuizPreview()}
+                                {this.renderQuizPreview(event.childQuiz)}
                                 {this.renderAddButton(event.event)}
                             </List>
                         </div>
@@ -356,7 +178,7 @@ class Events extends Component {
         );
     }
 
-    renderQuizPreview() {
+    renderQuizPreview(quizzes) {
         return quizzes.map((q, index) => (
             <ListItem button key={index}>
                 <ListItemText primary={q.title} />
@@ -509,7 +331,6 @@ class Events extends Component {
                     handleClose={this.handleClose}
                     handleClickOpen={this.handleClickOpen}
                     open={this.state.addModal}
-                    quizzes={quizzes}
                     getCategories={() => this.getCategories()}
                     categories={this.state.categories}
                     questions={this.state.questions}
