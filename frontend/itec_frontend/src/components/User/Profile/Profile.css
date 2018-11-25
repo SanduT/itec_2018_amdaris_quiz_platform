@@ -3,3 +3,31 @@
     height: 64px;
     display: flex
 }
+
+.profilePageContainer {
+    padding: 50px
+}
+
+.quizScoreContainer {
+    display: flex;
+    flex-wrap: wrap
+}
+
+.userScore {
+    width: auto;
+    margin: 16px;
+    padding: 20px;
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+}
+
+.quizTitle {
+    font-size: 20px;
+    font-weight: bold
+}
+
+.quizScore {
+    text-align: center;
+    font-style: italic
+}

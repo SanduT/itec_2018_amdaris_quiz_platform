@@ -38,13 +38,13 @@
 
 @media screen and (max-width:450px) {
     .paper {
-        width: 350px;
+        width: 300px;
     }
 }
 
 @media screen and (max-width:400px) {
     .paper {
-        width: 300px;
+        width: 270px;
     }
 }
 

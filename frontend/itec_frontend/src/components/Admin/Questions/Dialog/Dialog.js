@@ -249,7 +249,10 @@ class AddDialog extends React.Component {
                 difficulty_level: this.state.difficulty
             })
             .then(resp => this.props.getCategories())
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                alert(err.response.data.error);
+            });
 
         this.resetAll();
     }
