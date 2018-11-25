@@ -7,7 +7,6 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import SingleQuestion from "./SingleQuestion/SingleQuestion";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -204,12 +203,6 @@ class Questions extends Component {
                 this.triggerCloseCategoryModal();
                 this.getCategories();
             });
-    }
-
-    renderQuestions(question) {
-        return question.map((q, index) => {
-            return <SingleQuestion key={index} question={q} />;
-        });
     }
 
     renderQuestionPreview(questions) {

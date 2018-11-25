@@ -1,0 +1,25 @@
+.toolbarExtensionQuiz {
+    width: 100vw;
+    height: 40vh;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+.formContainer {
+    background-color: white;
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+    width: 900px;
+    margin: auto;
+    position: relative;
+    padding: 10px;
+    margin-top: 32px;
+}
+
+.quizTitle {
+    font-size: 30px;
+    margin: 32px;
+    position: relative;
+}

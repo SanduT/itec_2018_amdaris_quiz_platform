@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import AdminLogin from "./components/Admin/AdminLogin";
 import AdminPanel from "./components/Admin/AdminPanel";
 import Quiz from "./components/User/Quiz/Quiz";
+import Home from "./components/User/Home/Home";
 import Login from "./components/User/Login/Login";
 import "./App.css";
 import Verify from "./components/User/Verify";
@@ -36,7 +37,8 @@ class App extends Component {
                     <div>
                         <Route path="/login" exact initial component={Login} />
                         {this.state.isAdmin && <Route path="/admin" component={AdminPanel} />}
-                        <Route path="/" component={Quiz} exact />
+                        <Route path="/" component={Home} exact />
+                        <Route path="/quiz" component={Quiz} exact />
                         <Route path="/activate/:hash" exact component={Verify} />
                     </div>
                 </Router>

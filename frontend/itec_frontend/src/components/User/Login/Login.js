@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import axios from "../../../utils/axios";
 import "./Login.css";
 import "../../../styles/common.css";
+import Logo from "../../reusables/logoBlue";
 var NotificationSystem = require("react-notification-system");
 // import { connect } from 'react-redux'
 class Login extends Component {
@@ -113,40 +114,44 @@ class Login extends Component {
     renderLoginFields() {
         return (
             <div className="loginFieldsContainer">
-                <TextField
-                    id="standard-name"
-                    label="Email"
-                    //   className={classes.textField}
-                    value={this.state.email}
-                    onChange={this.handleChange("email")}
-                    margin="normal"
-                />
-                <br />
+                <div className="paper">
+                    <Logo />
 
-                <TextField
-                    id="standard-name"
-                    label="Password"
-                    //   className={classes.textField}
-                    value={this.state.password}
-                    type="password"
-                    onChange={this.handleChange("password")}
-                    margin="normal"
-                />
+                    <TextField
+                        id="standard-name"
+                        label="Email"
+                        //   className={classes.textField}
+                        value={this.state.email}
+                        onChange={this.handleChange("email")}
+                        margin="normal"
+                    />
+                    <br />
 
-                <br />
+                    <TextField
+                        id="standard-name"
+                        label="Password"
+                        //   className={classes.textField}
+                        value={this.state.password}
+                        type="password"
+                        onChange={this.handleChange("password")}
+                        margin="normal"
+                    />
 
-                <Button
-                    style={{ backgroundColor: primary, color: "white" }}
-                    variant="contained"
-                    className="loginButton"
-                    onClick={() => this.submit()}
-                >
-                    Primary
-                </Button>
+                    <br />
 
-                <p className="loginText" onClick={() => this.switchLogin()}>
-                    Already have an account?{" "}
-                </p>
+                    <Button
+                        style={{ backgroundColor: primary, color: "white" }}
+                        variant="contained"
+                        className="loginButton"
+                        onClick={() => this.submit()}
+                    >
+                        Log in
+                    </Button>
+
+                    <p className="loginText" onClick={() => this.switchLogin()}>
+                        Don't have an account?{" "}
+                    </p>
+                </div>
             </div>
         );
     }
@@ -154,62 +159,67 @@ class Login extends Component {
     renderSignUpFields() {
         return (
             <div className="loginFieldsContainer">
-                <TextField
-                    id="standard-name"
-                    label="Email"
-                    //   className={classes.textField}
-                    value={this.state.email}
-                    onChange={this.handleChange("email")}
-                    margin="normal"
-                />
-                <br />
+                <div className="paper">
+                    <Logo />
 
-                <TextField
-                    id="standard-name"
-                    label="Name"
-                    //   className={classes.textField}
-                    value={this.state.name}
-                    onChange={this.handleChange("name")}
-                    margin="normal"
-                />
+                    <TextField
+                        id="standard-name"
+                        label="Name"
+                        //   className={classes.textField}
+                        value={this.state.name}
+                        onChange={this.handleChange("name")}
+                        margin="normal"
+                    />
 
-                <br />
+                    <br />
 
-                <TextField
-                    id="standard-name"
-                    label="Phone"
-                    //   className={classes.textField}
-                    value={this.state.phone}
-                    onChange={this.handleChange("phone")}
-                    margin="normal"
-                />
+                    <TextField
+                        id="standard-name"
+                        label="Phone"
+                        type="number"
+                        //   className={classes.textField}
+                        value={this.state.phone}
+                        onChange={this.handleChange("phone")}
+                        margin="normal"
+                    />
 
-                <br />
+                    <br />
 
-                <TextField
-                    id="standard-name"
-                    label="Password"
-                    //   className={classes.textField}
-                    value={this.state.password}
-                    type="password"
-                    onChange={this.handleChange("password")}
-                    margin="normal"
-                />
+                    <TextField
+                        id="standard-name"
+                        label="Email"
+                        //   className={classes.textField}
+                        value={this.state.email}
+                        onChange={this.handleChange("email")}
+                        margin="normal"
+                    />
+                    <br />
 
-                <br />
+                    <TextField
+                        id="standard-name"
+                        label="Password"
+                        //   className={classes.textField}
+                        value={this.state.password}
+                        type="password"
+                        onChange={this.handleChange("password")}
+                        margin="normal"
+                    />
 
-                <Button
-                    style={{ backgroundColor: primary, color: "white" }}
-                    variant="contained"
-                    className="loginButton"
-                    onClick={() => this.submit()}
-                >
-                    Primary
-                </Button>
+                    <br />
 
-                <p className="loginText" onClick={() => this.switchLogin()}>
-                    Don't have an account?{" "}
-                </p>
+                    <Button
+                        style={{ backgroundColor: primary, color: "white" }}
+                        variant="contained"
+                        className="loginButton"
+                        onClick={() => this.submit()}
+                    >
+                        Register
+                    </Button>
+
+                    <p className="loginText" onClick={() => this.switchLogin()}>
+                        Already have an account?{" "}
+                    </p>
+                </div>
             </div>
         );
     }
