@@ -10,6 +10,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Edit from "@material-ui/icons/Edit";
+import PhotoFilter from "@material-ui/icons/PhotoFilter";
 import Add from "@material-ui/icons/Add";
 import SortBy from "./Sorting/SortBy";
 import Drawer from "@material-ui/core/Drawer";
@@ -182,7 +183,13 @@ class Events extends Component {
         return quizzes.map((q, index) => (
             <ListItem button key={index}>
                 <ListItemText primary={q.title} />
+                <Button onClick={() => this.props.history.push("/api/quiz/qrcode/"+q._id)} >
+                <PhotoFilter  />
+                </Button>
+                <Button onClick={() => this.triggerCloseEventModal()} >
                 <Edit />
+                </Button>
+              
             </ListItem>
         ));
     }
