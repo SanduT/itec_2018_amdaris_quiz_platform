@@ -40,6 +40,7 @@ class QuestionController extends Controller {
 
     return this.facade.find({}).then((questions) => {
       let questionTexts = questions.map((question) => question.text)
+      if (questionTexts.length === 0) questionTexts = ['']
       const similarity = stringSimilarity.findBestMatch(question.text, questionTexts)
       if (similarity.bestMatch.rating < 0.9) {
         req.body = objToAdd
