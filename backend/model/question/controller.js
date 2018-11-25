@@ -42,7 +42,7 @@ class QuestionController extends Controller {
       let questionTexts = questions.map((question) => question.text)
       if (questionTexts.length === 0) questionTexts = ['']
       const similarity = stringSimilarity.findBestMatch(question.text, questionTexts)
-      if (similarity.bestMatch.rating < 0.9) {
+      if (similarity.bestMatch.rating < 0.77) {
         req.body = objToAdd
         return this.create(req, res, next)
       } else return next(new Error(`Similar question found. similarity: ${similarity.bestMatch.rating}`))
@@ -91,7 +91,7 @@ class QuestionController extends Controller {
             let questionTexts = questions.map((question) => question.text)
             if (questionTexts.length === 0) questionTexts = ['']
             const similarity = stringSimilarity.findBestMatch(question.Question, questionTexts)
-            if (similarity.bestMatch.rating < 0.7) { return this.facade.create(objToAdd) } else return Promise.resolve()
+            if (similarity.bestMatch.rating < 0.77) { return this.facade.create(objToAdd) } else return Promise.resolve()
           })
         })
 

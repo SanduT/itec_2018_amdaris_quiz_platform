@@ -85,6 +85,7 @@ class UserController extends Controller {
       questions:req.body.questions
     }
     return this.facade.Model.updateOne({_id:req.requestUser._id},{$push:{quizzes:to_push}}).then((resp)=>{
+      mailSender.sendNotificationEmail(req.requestUser,"Thank you for completing the quiz! Find your quiz score in the leaderboard panel!")
       return res.status(200).json(resp)
     }).catch(next)
   }
@@ -109,7 +110,8 @@ class UserController extends Controller {
           userName:user.name,
           userId:user._id,
           score:score,
-          quizTitle:right_quiz.quizId.title
+          quizTitle:right_quiz.quizId.title,
+          quizId:right_quiz.quizId._id
         }
       })
       resolve(leaderBoard)

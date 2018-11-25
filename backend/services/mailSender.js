@@ -55,6 +55,36 @@ const sendActions = {
     }).then(message => {
       return Promise.resolve(message)
     })
+  },
+
+  sendNotificationEmail: (user,message) => {
+    const html = fs.readFileSync(
+      path.join(__dirname, '/templates/notification_email.html')
+    )
+    const template = handlebars.compile(html.toString())
+
+    const htmlToSend = template({
+      name: user.name || 'User',
+      message:message
+    })
+
+    let mailOptions = {
+      from: 'The Quizzard Team <quizzard@webamboos.ro>',
+      to: user.email,
+      subject: 'Good job wizard! Got mail.',
+      html: htmlToSend
+    }
+
+    return new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return reject(error)
+        }
+        return resolve('[SMTP-INFO] Message sent: ' + info.messageId)
+      })
+    }).then(message => {
+      return Promise.resolve(message)
+    })
   }
 }
 
