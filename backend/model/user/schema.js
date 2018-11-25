@@ -15,10 +15,10 @@ const userSchema = new Schema({
   customEmailAccept: {type: Boolean, default: true},
   quizzes: [{
     quizId: {type: Schema.Types.ObjectId,
-      ref: 'quizzes'},
+      ref: 'Quiz'},
     questions: [{
       questionId: {type: Schema.Types.ObjectId,
-        ref: 'questions'},
+        ref: 'Question'},
       answer: {type: String},
       right_answer: {type: Boolean}
     }],

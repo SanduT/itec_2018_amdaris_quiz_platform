@@ -88,6 +88,39 @@ class UserController extends Controller {
       return res.status(200).json(resp)
     }).catch(next)
   }
+
+
+
+  getLeaderbordEvents(req,res,next) {
+
+    const getLeaderboard = (quizzid) => new Promise((resolve,reject) =>
+    userFacade.Model.find({'quizzes.quizId':quizzid}).populate('quizzes.questions.questionId').populate('quizzes.quizId').lean().then((users)=>{
+      const leaderBoard = users.map((user)=>{
+        var score = 0
+        
+        const right_quiz = user.quizzes.filter((quiz)=>quiz.quizId._id && quiz.quizId._id == String(quizzid))[0]
+        right_quiz.questions.map((question)=>{
+          if(question.right_answer)
+          {
+            score+=question.questionId.difficulty_level
+          }
+        })
+        return {
+          userName:user.name,
+          userId:user._id,
+          score:score,
+          quizTitle:right_quiz.quizId.title
+        }
+      })
+      resolve(leaderBoard)
+    }).catch(err=>reject(err)))
+
+    Promise.all(req.requestUser.quizzes.map((quiz)=>getLeaderboard(quiz.quizId))).then((resp)=>{
+      res.status(200).send(resp)
+    }).catch(next)
+
+  }
+  
 }
 
 module.exports = new UserController(userFacade)

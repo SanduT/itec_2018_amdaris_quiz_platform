@@ -9,6 +9,9 @@ router.route('/')
 router.route('/me')
   .get([controller.isLoggedIn], (req, res, next) => res.status(200).send(req.requestUser))
 
+router.route('/leaderboard')
+  .get([controller.isLoggedIn], (req, res, next) => controller.getLeaderbordEvents(req,res,next))
+
 router.route('/login')
   .post((req, res, next) => controller.login(req, res, next))
 

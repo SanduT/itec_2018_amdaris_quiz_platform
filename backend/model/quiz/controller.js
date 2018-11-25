@@ -1,5 +1,6 @@
 const Controller = require('../../lib/controller')
 const quizFacade = require('./facade')
+const userFacade = require('../user/facade')
 const questionFacade = require('../question/facade')
 const qr = require('qr-image');  
 const mongoose = require('mongoose')
@@ -184,12 +185,35 @@ class QuizController extends Controller {
       })
     }
 
+
+
   }
 
   generateQR(req,res,next) {
     var code = qr.image("https://quizzard.club/quiz/"+req.params.quizzid, { type: 'svg' });
     res.type('svg');
     code.pipe(res);
+  }
+
+  getLeaderBoard(req,res,next){
+    userFacade.Model.find({'quizzes.quizId':req.params.quizzid}).populate('quizzes.questions.questionId').lean().then((users)=>{
+      const leaderBoard = users.map((user)=>{
+        var score = 0
+        const right_quiz = user.quizzes.filter((quiz)=>quiz.quizId && quiz.quizId == String(req.params.quizzid))[0]
+        right_quiz.questions.map((question)=>{
+          if(question.right_answer)
+          {
+            score+=question.questionId.difficulty_level
+          }
+        })
+        return {
+          userName:user.name,
+          userId:user._id,
+          score:score
+        }
+      })
+      res.status(200).json(leaderBoard)
+    }).catch(next)
   }
 }
 

@@ -16,6 +16,9 @@ router.route('/take/:quizzid')
 router.route('/qrcode/:quizzid')
   .get((...args) => controller.generateQR(...args))
 
+router.route('/leaderboard/:quizzid')
+  .get((...args) => controller.getLeaderBoard(...args))
+
 router.route('/:id')
   .put([userController.isAdmin], (...args) => controller.update(...args))
   .get([userController.isAdmin], (...args) => controller.findById(...args))
