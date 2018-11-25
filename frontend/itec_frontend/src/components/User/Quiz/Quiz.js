@@ -47,7 +47,7 @@ class Quiz extends Component {
             isLogged: false,
             questions: [],
             baseQuestions: [],
-            currentQuiz:{}
+            currentQuiz: {}
         };
     }
     componentWillMount() {
@@ -59,36 +59,36 @@ class Quiz extends Component {
             })
             .catch(err => this.props.history.push("/login"));
 
+        axios
+            .get("/quiz/take/" + this.props.match.params.id)
+            .then(resp => {
+                console.log(resp.data);
+                this.setState({ questions: resp.data.questions, currentQuiz: resp.data.quiz });
+                let baseQuestions = [];
 
-
-            axios.get("/quiz/take/"+ this.props.match.params.id).then(resp => {
-                
-            console.log(resp.data)
-            this.setState({ questions: resp.data.questions, currentQuiz:resp.data.quiz });
-            let baseQuestions = [];
-
-            for (let q of resp.data.questions) {
-                if (q.free_text) {
-                    baseQuestions.push({
-                        text: q.text,
-                        answer: "",
-                        questionId: q._id
-                    });
-                } else {
-                    baseQuestions.push({
-                        text: q.text,
-                        right_answer: "",
-                        questionId: q._id,
-                        answers: []
-                    });
+                for (let q of resp.data.questions) {
+                    if (q.free_text) {
+                        baseQuestions.push({
+                            text: q.text,
+                            answer: "",
+                            questionId: q._id
+                        });
+                    } else {
+                        baseQuestions.push({
+                            text: q.text,
+                            right_answer: "",
+                            questionId: q._id,
+                            answers: []
+                        });
+                    }
                 }
-            }
 
-            console.log(baseQuestions);
-            this.setState({ baseQuestions: baseQuestions });
-        }).catch((err)=>{
-            this.props.history.push("/")
-        })
+                console.log(baseQuestions);
+                this.setState({ baseQuestions: baseQuestions });
+            })
+            .catch(err => {
+                this.props.history.push("/");
+            });
     }
 
     handleChange = index => event => {
@@ -285,14 +285,17 @@ class Quiz extends Component {
             }
         }
 
-        axios.post("/user/submitquiz",{
-            questions:processedQuestions,
-            quizId:this.state.currentQuiz._id
-        }).then((resp)=>{
-            this.props.history.push("/")
-        }).catch((err)=>{
-            alert(err.response.data.error)
-        })
+        axios
+            .post("/user/submitquiz", {
+                questions: processedQuestions,
+                quizId: this.state.currentQuiz._id
+            })
+            .then(resp => {
+                this.props.history.push("/");
+            })
+            .catch(err => {
+                alert(err.response.data.error);
+            });
         console.log(processedQuestions);
 
         //this.state.currentQuiz._id

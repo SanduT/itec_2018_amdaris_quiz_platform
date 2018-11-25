@@ -179,16 +179,21 @@ class AddDialog extends React.Component {
 
     submitForm() {
         axios
-            .post("/quiz", {
-                title: this.state.title,
-                eventId: this.props.currentEvent._id,
-                scored: this.state.scored,
-                rules: this.state.quizContent
+            .post("/quiz/verify", { rules: this.state.quizContent })
+            .then(() => {
+                axios
+                    .post("/quiz", {
+                        title: this.state.title,
+                        eventId: this.props.currentEvent._id,
+                        scored: this.state.scored,
+                        rules: this.state.quizContent
+                    })
+                    .then(resp => this.resetAll())
+                    .catch(err => console.log(err));
             })
-            .then(resp => console.log(resp))
-            .catch(err => console.log(err));
-
-        this.resetAll();
+            .catch(error => {
+                alert(error.response.data.error);
+            });
     }
 
     resetAll() {
@@ -411,33 +416,39 @@ class AddDialog extends React.Component {
     }
 
     addQuestionToQuiz() {
-        axios.post("/quiz/verify", {rules:this.state.quizContent}).then(() => {
-            let newContent = this.state.quizContent;
+        axios
+            .post("/quiz/verify", { rules: this.state.quizContent })
+            .then(() => {
+                let newContent = this.state.quizContent;
 
-            newContent.push({
-                rule_type: "question",
-                id: ""
+                newContent.push({
+                    rule_type: "question",
+                    id: ""
+                });
+                this.setState({ quizContent: newContent });
+            })
+            .catch(error => {
+                alert(error.response.data.error);
             });
-            this.setState({ quizContent: newContent });
-        }).catch(error=>{
-            alert(error.response.data.error)
-        })
     }
 
     addCategoryToQuiz() {
-        axios.post("/quiz/verify", {rules:this.state.quizContent}).then(() => {
-            let newContent = this.state.quizContent;
+        axios
+            .post("/quiz/verify", { rules: this.state.quizContent })
+            .then(() => {
+                let newContent = this.state.quizContent;
 
-            newContent.push({
-                rule_type: "category",
-                id: "",
-                no: 1,
-                difficulty_level: null
+                newContent.push({
+                    rule_type: "category",
+                    id: "",
+                    no: 1,
+                    difficulty_level: null
+                });
+                this.setState({ quizContent: newContent });
+            })
+            .catch(error => {
+                alert(error.response.data.error);
             });
-            this.setState({ quizContent: newContent });
-        }).catch(error=>{
-            alert(error.response.data.error)
-        })
     }
 
     renderQuestionOptions() {
